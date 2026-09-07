@@ -1,0 +1,8 @@
+{
+  "name": "The Resonant Mirror - Personal Portfolio",
+  "description": "Retro CGA-themed personal portfolio of Thomas Kenny (The Resonant Mirror), featuring classic AT&T PC6300 typography, interactive project showcases, skills matrix, FIDO/WebAuthn authentication, GPG & ORCID verification, and boot sequence loading animations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

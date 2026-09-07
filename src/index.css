@@ -1,0 +1,158 @@
+@import "./fonts.css";
+@import "tailwindcss";
+
+:root {
+  --font-cga: 'PC6300', 'Courier New', Courier, monospace;
+
+  /* Resonant Mirror Brand Swatches (From Brand Palette) */
+  --rm-status: #00AA00;          /* Green Phosphor */
+  --rm-emphasis: #AD4CAC;        /* CGA Magenta / Violet */
+  --rm-warn: #FFFF55;            /* CGA Yellow / Amber */
+  --rm-accent: #0000FF;          /* Pure Classic Blue */
+  --rm-accent-bright: #3b82f6;   /* Electric Cyan-Blue */
+  --rm-danger: #FF0000;          /* CGA Red */
+  --rm-header: #171819;          /* Deep Header */
+  --rm-chrome-top: #F7EEE2;      /* Warm Paper Chrome Top */
+  --rm-chrome-bot: #A98B70;      /* Vintage Copper Chrome Bottom */
+  --rm-headings: #4A342A;        /* Deep Copper Heading */
+  --rm-heading-text: #EDE3D5;    /* Ivory Heading Text */
+
+  /* Light Mode (Resonant Ivory / Paper / Hermes Archive) */
+  --bg-primary: #FAF7F0;
+  --bg-secondary: #F1EEE5;
+  --bg-tertiary: #E8E3D5;
+  --bg-card: rgba(250, 247, 240, 0.95);
+  --text-primary: #171717;
+  --text-secondary: #4A342A;
+  --text-muted: #6B6357;
+  --border-color: #D8D2C2;
+  --border-strong: #86644C;
+  --border-highlight: #A98B70;
+  --code-bg: #EAE5D8;
+  --badge-bg: #E2DBD0;
+  --shadow-color: rgba(74, 52, 42, 0.12);
+  --terminal-bg: #151617;
+  --terminal-text: #55FF55;
+}
+
+[data-theme='dark'] {
+  /* Dark Mode (Obsidian / CRT Phosphor / Cybernetic Black) */
+  --bg-primary: #0F1011;
+  --bg-secondary: #171819;
+  --bg-tertiary: #1E2022;
+  --bg-card: rgba(23, 24, 25, 0.94);
+  --text-primary: #EDE3D5;
+  --text-secondary: #D4C9BA;
+  --text-muted: #8F877B;
+  --border-color: #36322C;
+  --border-strong: #A98B70;
+  --border-highlight: #4A342A;
+  --code-bg: #141517;
+  --badge-bg: #222428;
+  --shadow-color: rgba(0, 0, 0, 0.6);
+  --terminal-bg: #090A0B;
+  --terminal-text: #00FF66;
+}
+
+* {
+  font-family: var(--font-cga) !important;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.25s ease, color 0.25s ease;
+  overflow-x: hidden;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+
+/* Retro Scanlines (Optional user toggle) */
+.scanlines-overlay {
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.18) 50%
+  ), linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.03),
+    rgba(0, 255, 0, 0.01),
+    rgba(0, 0, 255, 0.03)
+  );
+  background-size: 100% 3px, 4px 100%;
+  pointer-events: none;
+}
+
+/* User's exact signature Rainbow Borders from .md to PDF generator */
+.rainbow-border-top {
+  border-top: 3px solid;
+  border-image: linear-gradient(90deg, #3b82f6 0%, #a855f7 35%, #ec4899 70%, #f59e0b 100%) 1;
+}
+
+.rainbow-border-all {
+  border: 2px solid;
+  border-image: linear-gradient(90deg, #3b82f6 0%, #a855f7 35%, #ec4899 70%, #f59e0b 100%) 1;
+}
+
+.rainbow-border-subtle {
+  border-bottom: 2px solid;
+  border-image: linear-gradient(90deg, rgba(59,130,246,0.6), rgba(168,85,247,0.6), rgba(236,72,153,0.6), rgba(245,158,11,0.6)) 1;
+}
+
+/* CRT Blinking Cursor */
+@keyframes cga-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.cga-cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.1em;
+  background-color: currentColor;
+  vertical-align: -0.15em;
+  margin-left: 2px;
+  animation: cga-blink 0.9s infinite;
+}
+
+/* Beveled retro button */
+.retro-btn {
+  border-top: 2px solid var(--border-highlight);
+  border-left: 2px solid var(--border-highlight);
+  border-right: 2px solid var(--border-strong);
+  border-bottom: 2px solid var(--border-strong);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  transition: all 0.1s ease;
+}
+
+.retro-btn:hover {
+  background: var(--bg-tertiary);
+}
+
+.retro-btn:active {
+  border-top: 2px solid var(--border-strong);
+  border-left: 2px solid var(--border-strong);
+  border-right: 2px solid var(--border-highlight);
+  border-bottom: 2px solid var(--border-highlight);
+  transform: translateY(1px);
+}
+
+/* Scrollbar retro styling */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-left: 1px solid var(--border-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border: 1px solid var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--rm-chrome-bot);
+}
