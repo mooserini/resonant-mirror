@@ -1,4 +1,4 @@
-import { validateContactForm, buildMailtoUrl } from '../utils/contactService';
+import { validateContactForm, buildMailtoUrl, submitContactMessage } from '../utils/contactService';
 import { ContactFormData } from '../types';
 
 describe('Contact Form & Dispatch Service', () => {
@@ -34,9 +34,9 @@ describe('Contact Form & Dispatch Service', () => {
     expect(result.errors.message).toBeDefined();
   });
 
-  test('buildMailtoUrl targets mooserini@gmail.com with encoded subject and body', () => {
+  test('buildMailtoUrl targets tom@getadongle.com with encoded subject and body', () => {
     const url = buildMailtoUrl(validData);
-    expect(url.startsWith('mailto:mooserini@gmail.com')).toBe(true);
+    expect(url.startsWith('mailto:tom@getadongle.com')).toBe(true);
     expect(url).toContain('RM-DISPATCH');
     expect(url).toContain(encodeURIComponent('Collaboration on Bernoulli numbers'));
   });
@@ -44,8 +44,21 @@ describe('Contact Form & Dispatch Service', () => {
   test('buildMailtoUrl includes PGP block wrapper when encryptWithGpg is true', () => {
     const gpgData: ContactFormData = { ...validData, encryptWithGpg: true };
     const url = buildMailtoUrl(gpgData);
-    expect(url).toContain('GPG-SECURED');
+    expect(url).toContain('GPG-SIMULATION');
     expect(decodeURIComponent(url)).toContain('-----BEGIN PGP MESSAGE-----');
     expect(decodeURIComponent(url)).toContain('-----END PGP MESSAGE-----');
   });
+  test('preparing a draft uses the domain address without making a network request', async () => {
+    const fetchSpy = jest.spyOn(globalThis, 'fetch');
+    try {
+      const receipt = await submitContactMessage(validData);
+      expect(fetchSpy).not.toHaveBeenCalled();
+      expect(receipt.mailtoUrl).toMatch(/^mailto:tom@getadongle\.com\?/);
+      expect(receipt.message).toContain('Open your email app to send');
+      expect(receipt.message).not.toMatch(/sent|delivered|queued/i);
+    } finally {
+      fetchSpy.mockRestore();
+    }
+  });
+
 });

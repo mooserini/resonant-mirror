@@ -98,7 +98,7 @@ export const ContactSection: React.FC = () => {
                 DISPATCH TO THOMAS KENNY
               </h2>
               <p className="text-xs sm:text-sm text-[var(--text-secondary)] font-mono mt-1">
-                Transmits directly to destination address:{' '}
+                Prepare an email to:{' '}
                 <span className="font-bold text-[var(--rm-headings)] underline decoration-dotted">
                   {PERSONAL_INFO.email}
                 </span>
@@ -106,7 +106,7 @@ export const ContactSection: React.FC = () => {
             </div>
 
             <div className="text-xs font-mono text-[var(--rm-status)] bg-[var(--bg-primary)] px-3 py-1.5 border border-[var(--border-color)]">
-              QUEUE STATUS: ONLINE &amp; ACCEPTING
+              DISPATCH STATUS: READY
             </div>
           </div>
         </div>
@@ -120,9 +120,9 @@ export const ContactSection: React.FC = () => {
                 <div className="flex items-center justify-between border-b border-gray-700 pb-2 text-[#88cc88]">
                   <div className="flex items-center gap-2 font-bold">
                     <CheckCircle className="w-4 h-4 text-[var(--rm-status)]" />
-                    <span>TRANSMISSION RECEIPT GENERATED</span>
+                    <span>EMAIL DRAFT PREPARED</span>
                   </div>
-                  <span className="text-[11px] text-gray-400">ACK 200 OK</span>
+                  <span className="text-[11px] text-gray-400">AWAITING SEND</span>
                 </div>
 
                 <div className="space-y-1.5 pt-1">
@@ -149,7 +149,7 @@ export const ContactSection: React.FC = () => {
                 </div>
 
                 <div className="border-t border-gray-700 pt-2 text-[11px] text-[#a3ffa3]">
-                  A pre-formatted email packet has been staged. You can launch your native email client with 1-click or copy the transmission payload below.
+                  Your message is ready. Open your email app and send it there, or copy the text below.
                 </div>
               </div>
 
@@ -291,7 +291,7 @@ export const ContactSection: React.FC = () => {
                   ) : (
                     <Send className="w-4 h-4" />
                   )}
-                  <span>{isSubmitting ? 'DISPATCHING...' : '[ TRANSMIT DISPATCH ]'}</span>
+                  <span>{isSubmitting ? 'PREPARING...' : '[ PREPARE DISPATCH ]'}</span>
                 </button>
 
                 <button

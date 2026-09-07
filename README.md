@@ -1,3 +1,5 @@
+> Custom-domain migration: see [DEPLOYMENT.md](DEPLOYMENT.md) for current routing, authentication, and verification status.
+
 # The Resonant Mirror — Personal Portfolio & Archival Dossier
 ### Thomas Kenny (`Uncle Russet` / `@mooserini`)
 
@@ -59,20 +61,16 @@ The visual theme reflects the user's proprietary `.md to PDF generator` styling 
   - Full Fingerprint: `ED39 8C7B 4A9F B872 19EC 4E53 D82A 991B 77B4 C390`
   - Interactive modal with 1-click clipboard copying and `.asc` public key download.
 - **ORCID Verification**:
-  - ID: `0009-0002-8419-7922`
+  - ID: `0009-0000-9987-6106`
   - Direct verified link to scholarly record.
 - **Personal Blog / Dispatches Reader**:
-  - Built-in reader modal displaying archival essays on autonomic agent continuity and CGA graphics archaeology, alongside external link to `https://resonantmirror.com/blog`.
+  - Built-in reader modal displaying archival essays on autonomic agent continuity and CGA graphics archaeology, alongside external link to `https://www.getadongle.com/#dispatches`.
 
-### 2.4 Functional Contact & Dispatch Terminal
-- Direct message dispatch targeting `mooserini@gmail.com`.
-- Fields: Name / Callsign, Return Email, Subject, and Message Payload.
-- Optional **GPG Armored Envelope**: wraps plain text message in standard RFC 4880 PGP armored markers.
-- Multi-tier delivery:
-  1. POSTs to `/api/contact` middleware, generating a unique Confirmation ID.
-  2. Generates an instant visual receipt in green retro terminal format.
-  3. Provides a 1-click `[ OPEN IN EMAIL CLIENT (MAILTO) ]` button with complete pre-filled subject and payload.
-  4. 1-click payload copy button for manual emailing.
+### 2.4 Contact & Dispatch Terminal
+- Public destination: `tom@getadongle.com`.
+- The form prepares a local email draft and opens the visitor's email app through a `mailto:` link.
+- Visitors send the message from their email app. Preparing a draft does not send, queue, or archive it on a server.
+- The optional armored-envelope display is a plaintext simulation, not encryption.
 
 ### 2.5 Web Audio Retro PC Speaker Synthesizer
 - Built-in Web Audio API square-wave generator simulating classic vintage PC internal speaker beeps (880Hz POST beeps, D5/A5 boot chime, keyclicks).
@@ -189,7 +187,7 @@ The visual theme reflects the user's proprietary `.md to PDF generator` styling 
 ├── jest.config.cjs                     # Jest + ts-jest configuration
 ├── metadata.json                       # AI Studio project manifest
 ├── package.json                        # Dependencies, test and build scripts
-└── vite.config.ts                      # Vite build configuration + /api/contact plugin
+└── vite.config.ts                      # Vite build configuration
 ```
 
 ---
@@ -207,7 +205,7 @@ npm install
 ```
 
 ### Running the Development Server
-Starts Vite with the `/api/contact` middleware on `http://localhost:3000`:
+Starts Vite on `http://localhost:3000`:
 ```bash
 npm run dev
 ```
@@ -236,5 +234,5 @@ npm run build
 
 1. **Typography Rule**: Never introduce non-monospace or antialiased modern fonts (e.g. Inter, Roboto) into the main content. All elements must inherit from `var(--font-cga)` (`'PC6300'`).
 2. **Color Inversion Discipline**: When introducing new cards or visual modules, ensure both Light Mode (`var(--bg-primary)` / `#FAF7F0`) and Dark Mode (`var(--bg-primary)` / `#0F1011`) color tokens are verified.
-3. **Contact Dispatch Endpoint**: The form transmits to `mooserini@gmail.com`. If routing to an external SMTP provider (such as Resend or Postmark), configure server credentials in `.env.example` without exposing them to client-side code.
+3. **Contact**: The form prepares a `mailto:` draft for `tom@getadongle.com`. A future server delivery feature needs a separately configured mail provider.
 4. **FIDO Hardware Credentials**: Any adjustments to `fidoAuth.ts` must maintain compatibility with both native `PublicKeyCredential` in top-level browser contexts and the sandboxed iframe fallback protocol.

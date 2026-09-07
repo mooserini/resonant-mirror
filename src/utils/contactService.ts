@@ -29,7 +29,7 @@ export function validateContactForm(data: ContactFormData): { valid: boolean; er
 
 export function buildMailtoUrl(data: ContactFormData): string {
   const recipient = PERSONAL_INFO.email;
-  const prefix = data.encryptWithGpg ? '[GPG-SECURED] ' : '[RM-DISPATCH] ';
+  const prefix = data.encryptWithGpg ? '[GPG-SIMULATION] ' : '[RM-DISPATCH] ';
   const fullSubject = `${prefix}${data.subject}`;
 
   let body = `FROM: ${data.name} <${data.email}>\n`;
@@ -39,7 +39,7 @@ export function buildMailtoUrl(data: ContactFormData): string {
 
   if (data.encryptWithGpg) {
     body += `-----BEGIN PGP MESSAGE-----\n`;
-    body += `Comment: Encrypted dispatch to Thomas Kenny (4A9F B872 19EC 4E53)\n\n`;
+    body += `Comment: Plaintext envelope simulation for Thomas Kenny (4A9F B872 19EC 4E53)\n\n`;
     body += `${data.message}\n\n`;
     body += `-----END PGP MESSAGE-----\n`;
   } else {
@@ -59,38 +59,12 @@ export async function submitContactMessage(data: ContactFormData): Promise<Conta
   const confirmationId = `RM-DISPATCH-${Date.now().toString(36).toUpperCase()}-${Math.floor(Math.random() * 899 + 100)}`;
   const mailtoUrl = buildMailtoUrl(data);
 
-  // Attempt API post if server exists
-  try {
-    const response = await fetch('/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...data,
-        confirmationId,
-        recipient: PERSONAL_INFO.email,
-        timestamp: new Date().toISOString(),
-      }),
-    });
-
-    if (response.ok) {
-      const json = await response.json();
-      return {
-        success: true,
-        confirmationId: json.confirmationId || confirmationId,
-        timestamp: json.timestamp || new Date().toLocaleString(),
-        message: 'Message registered in local dispatch queue & transmission receipt created.',
-        mailtoUrl,
-      };
-    }
-  } catch {
-    // Graceful offline / client-direct execution
-  }
 
   return {
     success: true,
     confirmationId,
     timestamp: new Date().toLocaleString(),
-    message: `Transmission formatted for ${PERSONAL_INFO.email}. Receipt archived.`,
+    message: `Draft ready for ${PERSONAL_INFO.email}. Open your email app to send it.`,
     mailtoUrl,
   };
 }

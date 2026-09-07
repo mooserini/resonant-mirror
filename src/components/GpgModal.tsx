@@ -99,9 +99,9 @@ export const GpgModal: React.FC<GpgModalProps> = ({ isOpen, onClose }) => {
 
           {/* Verification Command Instruction */}
           <div className="p-3 bg-[var(--bg-primary)] border border-[var(--border-color)] text-[11px] space-y-1">
-            <div className="font-bold text-[var(--text-primary)]">IMPORT &amp; VERIFY COMMAND:</div>
+            <div className="font-bold text-[var(--text-primary)]">LOCAL KEY INSPECTION:</div>
             <code className="text-[var(--rm-accent-bright)] block bg-[var(--code-bg)] p-1.5 border border-[var(--border-color)]">
-              curl -s https://resonantmirror.com/pubkey.asc | gpg --import
+              gpg --show-keys thomas-kenny-{PERSONAL_INFO.gpgKeyId.replace(/\s+/g, '')}.asc
             </code>
           </div>
 

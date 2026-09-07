@@ -67,6 +67,15 @@ export default function App() {
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
   const [isRefinementModalOpen, setIsRefinementModalOpen] = useState(false);
 
+  useEffect(() => {
+    const openLinkedDispatches = () => {
+      if (window.location.hash === '#dispatches') setIsBlogModalOpen(true);
+    };
+    openLinkedDispatches();
+    window.addEventListener('hashchange', openLinkedDispatches);
+    return () => window.removeEventListener('hashchange', openLinkedDispatches);
+  }, []);
+
   // Global hotkey: press ` or ~ to toggle hidden DOS terminal
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {

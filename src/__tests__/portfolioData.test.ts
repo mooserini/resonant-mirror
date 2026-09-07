@@ -10,8 +10,8 @@ import {
 describe('Portfolio Static Data & Integrity', () => {
   test('PERSONAL_INFO contains expected verified credentials', () => {
     expect(PERSONAL_INFO.name).toBe('Thomas Kenny');
-    expect(PERSONAL_INFO.email).toBe('mooserini@gmail.com');
-    expect(PERSONAL_INFO.orcid).toBe('0009-0002-8419-7922');
+    expect(PERSONAL_INFO.email).toBe('tom@getadongle.com');
+    expect(PERSONAL_INFO.orcid).toBe('0009-0000-9987-6106');
     expect(PERSONAL_INFO.gpgKeyId).toBe('4A9F B872 19EC 4E53');
     expect(PERSONAL_INFO.githubUrl).toContain('mooserini');
   });

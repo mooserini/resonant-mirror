@@ -10,7 +10,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { Project } from '../types';
-import { PROJECTS } from '../data/portfolioData';
+import { PERSONAL_INFO, PROJECTS } from '../data/portfolioData';
 import { retroAudio } from '../utils/audio';
 import { GithubHeatmap } from './GithubHeatmap';
 
@@ -190,10 +190,10 @@ export const ProjectsSection: React.FC = () => {
                         rel="noopener noreferrer"
                         onClick={() => retroAudio.playKeyclick()}
                         className="retro-btn px-2.5 py-1 flex items-center gap-1.5 cursor-pointer font-bold"
-                        title="View GitHub Repository"
+                        title={project.repoUrl === PERSONAL_INFO.githubUrl ? "View Thomas Kenny on GitHub" : "View project destination"}
                       >
                         <Github className="w-3.5 h-3.5" />
-                        <span>SRC REPO</span>
+                        <span>{project.repoUrl === PERSONAL_INFO.githubUrl ? "GITHUB PROFILE" : project.repoUrl === PERSONAL_INFO.huggingFaceUrl ? "HUGGING FACE" : "SRC REPO"}</span>
                       </a>
                     )}
                     {project.link && (

@@ -141,7 +141,7 @@ export const BlogModal: React.FC<BlogModalProps> = ({ isOpen, onClose }) => {
             onClick={() => retroAudio.playKeyclick()}
             className="text-[var(--rm-accent-bright)] hover:underline flex items-center gap-1 font-bold"
           >
-            <span>VISIT EXTERNAL BLOG ({PERSONAL_INFO.blogUrl})</span>
+            <span>DISPATCHES PERMALINK ({PERSONAL_INFO.blogUrl})</span>
             <ExternalLink className="w-3.5 h-3.5" />
           </a>
 

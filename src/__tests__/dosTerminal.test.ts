@@ -39,8 +39,8 @@ describe('Hidden 80s DOS Terminal Subsystem', () => {
     const lines = executeTerminalCommand('whois', context);
     expect(lines.length).toBe(1);
     expect(lines[0].text).toContain('THOMAS KENNY');
-    expect(lines[0].text).toContain('mooserini@gmail.com');
-    expect(lines[0].text).toContain('0009-0002-8419-7922');
+    expect(lines[0].text).toContain('tom@getadongle.com');
+    expect(lines[0].text).toContain('0009-0000-9987-6106');
     expect(lines[0].text).toContain('4A9F B872 19EC 4E53');
   });
 

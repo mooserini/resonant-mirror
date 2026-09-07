@@ -1,0 +1,22 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "resonant-mirror-portfolio",
+  "account_id": "815bcdaf788850798df37ed8f3afb8d0",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-09-07",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [
+    { "pattern": "www.getadongle.com/*", "zone_id": "4e2ee5bb4dee2ff2ddcced14e2e0d5e9" }
+  ],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+    "html_handling": "none",
+    "not_found_handling": "none"
+  },
+  "services": [{ "binding": "RED_DOOR", "service": "red-door" }],
+  "observability": { "enabled": true, "head_sampling_rate": 1 }
+}
