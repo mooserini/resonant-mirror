@@ -274,7 +274,7 @@ export const ContactSection: React.FC = () => {
                   <span className="font-bold text-[var(--text-primary)]">
                     Armored GPG Envelope Simulation:
                   </span>{' '}
-                  Wrap this message in ASCII armored PGP markers for Thomas Kenny&apos;s public key (ID: 4A9F B872 19EC 4E53).
+                  Wrap this message in ASCII armored PGP markers for Thomas Kenny&apos;s public key (ID: F3BE 037D 8488 31E9).
                 </label>
               </div>
 

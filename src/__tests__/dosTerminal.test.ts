@@ -41,7 +41,7 @@ describe('Hidden 80s DOS Terminal Subsystem', () => {
     expect(lines[0].text).toContain('THOMAS KENNY');
     expect(lines[0].text).toContain('tom@getadongle.com');
     expect(lines[0].text).toContain('0009-0000-9987-6106');
-    expect(lines[0].text).toContain('4A9F B872 19EC 4E53');
+    expect(lines[0].text).toContain('F3BE 037D 8488 31E9');
   });
 
   test('stats command returns 8086 CPU, 640KB RAM, and CGA video', () => {

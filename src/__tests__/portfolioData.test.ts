@@ -12,14 +12,15 @@ describe('Portfolio Static Data & Integrity', () => {
     expect(PERSONAL_INFO.name).toBe('Thomas Kenny');
     expect(PERSONAL_INFO.email).toBe('tom@getadongle.com');
     expect(PERSONAL_INFO.orcid).toBe('0009-0000-9987-6106');
-    expect(PERSONAL_INFO.gpgKeyId).toBe('4A9F B872 19EC 4E53');
+    expect(PERSONAL_INFO.gpgKeyId).toBe('F3BE 037D 8488 31E9');
+    expect(PERSONAL_INFO.gpgFingerprint).toBe('6033 90B2 EF80 46D6 7DCA FC2C F3BE 037D 8488 31E9');
     expect(PERSONAL_INFO.githubUrl).toContain('mooserini');
   });
 
   test('GPG armored key block has valid header and checksum markers', () => {
     expect(GPG_ARMORED_PUBLIC_KEY).toContain('-----BEGIN PGP PUBLIC KEY BLOCK-----');
     expect(GPG_ARMORED_PUBLIC_KEY).toContain('-----END PGP PUBLIC KEY BLOCK-----');
-    expect(GPG_ARMORED_PUBLIC_KEY).toContain('Thomas Kenny (Uncle Russet / mooserini)');
+    expect(GPG_ARMORED_PUBLIC_KEY).toContain('=7WbX');
   });
 
   test('PROJECTS array contains Hermes Audit and MD to PDF generator', () => {
