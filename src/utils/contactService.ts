@@ -39,7 +39,7 @@ export function buildMailtoUrl(data: ContactFormData): string {
 
   if (data.encryptWithGpg) {
     body += `-----BEGIN PGP MESSAGE-----\n`;
-    body += `Comment: Plaintext envelope simulation for Thomas Kenny (F3BE 037D 8488 31E9)\n\n`;
+    body += `Comment: Plaintext envelope simulation for Thomas Kenny (17B5 86FD 7394 2305)\n\n`;
     body += `${data.message}\n\n`;
     body += `-----END PGP MESSAGE-----\n`;
   } else {
