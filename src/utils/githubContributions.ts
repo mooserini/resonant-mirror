@@ -5,50 +5,60 @@ export const PHOSPHOR_PALETTES: Record<HeatmapPhosphorMode, {
   code: string;
   wavelength: string;
   colors: [string, string, string, string, string]; // levels 0..4
+  lightColors: [string, string, string, string, string];
   accentGlow: string;
   bgRaster: string;
   borderColor: string;
   labelColor: string;
+  lightLabelColor: string;
 }> = {
   green: {
     name: 'P1 GREEN PHOSPHOR',
     code: 'IBM 5151 (525nm)',
     wavelength: '525 nm',
     colors: ['#0d1c10', '#144621', '#237b3b', '#39bc59', '#55ff77'],
+    lightColors: ['#e3e8df', '#b7d8b9', '#7fbd84', '#39974f', '#136f32'],
     accentGlow: 'rgba(85, 255, 119, 0.45)',
     bgRaster: '#060d08',
     borderColor: '#237b3b',
     labelColor: '#39bc59',
+    lightLabelColor: '#087a34',
   },
   amber: {
     name: 'P3 AMBER PHOSPHOR',
     code: 'MDA 12" (590nm)',
     wavelength: '590 nm',
     colors: ['#1c1304', '#4c2e08', '#865510', '#c9851c', '#ffb533'],
+    lightColors: ['#ebe4d5', '#e6ca8f', '#d3a445', '#a96f0c', '#714600'],
     accentGlow: 'rgba(255, 181, 51, 0.45)',
     bgRaster: '#0d0902',
     borderColor: '#865510',
     labelColor: '#c9851c',
+    lightLabelColor: '#8a5700',
   },
   white: {
     name: 'P4 WHITE PHOSPHOR',
     code: 'PAPER WHITE (400-700nm)',
     wavelength: 'White / Broad',
     colors: ['#121212', '#363636', '#6e6e6e', '#aaaaaa', '#efefef'],
+    lightColors: ['#ebe6dc', '#c9c2b5', '#988f81', '#5f5850', '#282522'],
     accentGlow: 'rgba(240, 240, 240, 0.4)',
     bgRaster: '#080808',
     borderColor: '#6e6e6e',
     labelColor: '#aaaaaa',
+    lightLabelColor: '#4f4942',
   },
   cga: {
     name: 'CGA CYAN / AZURE',
     code: 'RGBI COLOR 03/11',
     wavelength: '480 nm',
     colors: ['#07141f', '#0f3856', '#1a6598', '#2a98dd', '#55ffff'],
+    lightColors: ['#e1e8eb', '#b1d7e6', '#72b7d3', '#298db8', '#075e82'],
     accentGlow: 'rgba(85, 255, 255, 0.45)',
     bgRaster: '#030a10',
     borderColor: '#1a6598',
     labelColor: '#2a98dd',
+    lightLabelColor: '#07698f',
   },
 };
 

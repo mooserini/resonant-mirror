@@ -6,16 +6,17 @@ import { Logo } from './Logo';
 import { ProfileCredentialCards } from './ProfileCredentialCards';
 
 interface HeroBioProps {
+  theme: 'light' | 'dark';
   onOpenGpg: () => void;
   onOpenFido: () => void;
   onOpenRefinement?: () => void;
 }
 
-export const HeroBio: React.FC<HeroBioProps> = ({ onOpenGpg, onOpenRefinement }) => {
+export const HeroBio: React.FC<HeroBioProps> = ({ theme, onOpenGpg, onOpenRefinement }) => {
   return (
     <section id="biography" className="py-8 sm:py-12">
       {/* 80s ASCII Art Representation of The Resonant Mirror */}
-      <Logo />
+      <Logo theme={theme} />
 
       {/* Archival Dossier Paper Card */}
       <div className="bg-[var(--bg-card)] border-2 border-[var(--border-strong)] shadow-xl relative overflow-hidden">

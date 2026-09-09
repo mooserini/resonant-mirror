@@ -45,5 +45,9 @@ test.each(['missing', 'duplicate', 'negative', 'level', 'date', 'total', 'empty'
 });
 
 test('preserves all four CRT palettes', () => {
-  Object.values(PHOSPHOR_PALETTES).forEach(palette => expect(palette.colors).toHaveLength(5));
+  Object.values(PHOSPHOR_PALETTES).forEach(palette => {
+    expect(palette.colors).toHaveLength(5);
+    expect(palette.lightColors).toHaveLength(5);
+    expect(palette.lightLabelColor).toMatch(/^#[0-9a-f]{6}$/i);
+  });
 });

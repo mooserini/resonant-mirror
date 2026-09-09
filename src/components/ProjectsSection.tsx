@@ -4,7 +4,11 @@ import { PROJECTS } from '../data/portfolioData';
 import { retroAudio } from '../utils/audio';
 import { GithubHeatmap } from './GithubHeatmap';
 
-export const ProjectsSection: React.FC = () => {
+interface ProjectsSectionProps {
+  theme: 'light' | 'dark';
+}
+
+export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme }) => {
   const [activeCategory, setActiveCategory] = useState<string>('all');
 
   const categories = [
@@ -45,7 +49,7 @@ export const ProjectsSection: React.FC = () => {
         </div>
 
         {/* 1980s Monochrome D3 GitHub Contribution Heatmap */}
-        <GithubHeatmap />
+        <GithubHeatmap theme={theme} />
 
         {/* Category Filters */}
         <div className="flex flex-wrap gap-2" role="tablist" aria-label="Project Categories">

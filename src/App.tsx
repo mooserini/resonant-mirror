@@ -227,12 +227,13 @@ export default function App() {
           {/* Core Page Content */}
           <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
             <HeroBio
+              theme={theme}
               onOpenGpg={() => setIsGpgModalOpen(true)}
               onOpenFido={() => setIsFidoModalOpen(true)}
               onOpenRefinement={() => setIsRefinementModalOpen(true)}
             />
 
-            <ProjectsSection />
+            <ProjectsSection theme={theme} />
 
             <SkillsMatrix />
 

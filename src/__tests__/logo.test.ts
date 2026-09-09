@@ -17,4 +17,10 @@ describe('Logo Component & 80s ASCII Art Representation', () => {
     expect(ASCII_EMBLEM).toContain('THE RESONANT MIRROR');
     expect(ASCII_EMBLEM).toContain('AT&T PC6300');
   });
+
+  test('ASCII_EMBLEM preserves the first-line indentation', () => {
+    const [head, face] = ASCII_EMBLEM.split('\n');
+    expect(head).toBe('               .---.');
+    expect(face).toBe('              /     \\');
+  });
 });
