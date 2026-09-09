@@ -1,11 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { transform } from 'esbuild';
-import { readFile } from 'node:fs/promises';
+import { build } from 'esbuild';
 
-const source = await readFile(new URL('./index.ts', import.meta.url), 'utf8');
-const compiled = await transform(source, { loader: 'ts', format: 'esm' });
-const { default: worker } = await import(`data:text/javascript;base64,${Buffer.from(compiled.code).toString('base64')}`);
+const compiled = await build({ entryPoints: [new URL('./index.ts', import.meta.url).pathname], bundle: true, write: false, format: 'esm' });
+const { default: worker } = await import(`data:text/javascript;base64,${Buffer.from(compiled.outputFiles[0].text).toString('base64')}`);
 
 test('Red Door POST retains its body, cookie and origin without touching static assets', async () => {
   const request = new Request('https://www.getadongle.com/api/commands', {
@@ -37,11 +35,13 @@ test('portfolio homepage is served by assets instead of the legacy site', async 
 });
 
 test('legacy game scripts remain owned by Red Door', async () => {
-  const response = await worker.fetch(new Request('https://www.getadongle.com/door.js'), {
-    ASSETS: { fetch() { throw new Error('Game script must not reach new assets'); } },
-    RED_DOOR: { fetch: async () => new Response('legacy script') },
-  });
-  assert.equal(await response.text(), 'legacy script');
+  for (const path of ['/door.js', '/barkeep.js']) {
+    const response = await worker.fetch(new Request(`https://www.getadongle.com${path}`), {
+      ASSETS: { fetch() { throw new Error('Game script must not reach new assets'); } },
+      RED_DOOR: { fetch: async () => new Response('legacy script') },
+    });
+    assert.equal(await response.text(), 'legacy script');
+  }
 });
 
 test('Red Door entrance serves the original document with the existing session', async () => {

@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { ContributionDay, HeatmapPhosphorMode } from '../types';
 import { 
-  generateContributionData, 
+  summarizeContributions, validateCalendar, type PublicContributionCalendar,
   PHOSPHOR_PALETTES 
 } from '../utils/githubContributions';
 import { PERSONAL_INFO } from '../data/portfolioData';
@@ -37,8 +37,37 @@ export const GithubHeatmap: React.FC<GithubHeatmapProps> = ({
   const svgRef = useRef<SVGSVGElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Generate deterministic contribution dataset
-  const { days, summary } = useMemo(() => generateContributionData(), []);
+  const [calendar, setCalendar] = useState<PublicContributionCalendar | null>(null);
+  const [error, setError] = useState(false);
+  const [retry, setRetry] = useState(0);
+  useEffect(() => {
+    let disposed = false;
+    const controller = new AbortController();
+    async function refresh() {
+      try {
+        const response = await fetch('/github-contributions.json', {
+          signal: AbortSignal.any([controller.signal, AbortSignal.timeout(15000)]),
+        });
+        if (!response.ok) throw new Error('Calendar unavailable');
+        const next = validateCalendar(await response.json());
+        if (!disposed) {
+          setCalendar(next);
+          setError(false);
+          setHoveredDay(null);
+          setSelectedDay(null);
+        }
+      } catch {
+        if (!disposed) { setCalendar(null); setError(true); }
+      }
+    }
+    setError(false);
+    void refresh();
+    const interval = window.setInterval(() => { void refresh(); }, 15 * 60 * 1000);
+    return () => { disposed = true; controller.abort(); window.clearInterval(interval); };
+  }, [retry]);
+  const { days, summary } = useMemo(() => calendar ? summarizeContributions(calendar) :
+    { days: [], summary: null }, [calendar]);
+  const weekCount = days.length ? days[days.length - 1].weekIndex + 1 : 0;
   const palette = PHOSPHOR_PALETTES[phosphorMode];
 
   // Helper weekday names
@@ -65,7 +94,7 @@ export const GithubHeatmap: React.FC<GithubHeatmapProps> = ({
 
     days.forEach((d) => {
       const date = new Date(d.date);
-      const m = date.getMonth();
+      const m = date.getUTCMonth();
       if (m !== lastMonth && d.weekday === 0) {
         monthOffsets.push({
           month: monthNames[m],
@@ -110,7 +139,7 @@ export const GithubHeatmap: React.FC<GithubHeatmapProps> = ({
         .text(item.label);
     });
 
-    // 3. Grid Cells (52 cols x 7 rows)
+    // 3. Preserve the source calendar span, including partial weeks
     const cellsGroup = g.append('g').attr('class', 'heatmap-cells');
 
     const cellRects = cellsGroup
@@ -130,6 +159,8 @@ export const GithubHeatmap: React.FC<GithubHeatmapProps> = ({
       .attr('stroke-width', 0.75)
       .style('cursor', 'pointer')
       .style('transition', 'all 0.12s ease');
+
+    cellRects.append('title').text((d: ContributionDay) => `${d.date}: ${d.count} contributions`);
 
     // Add subtle glow on high-level cells
     cellRects.filter((d: ContributionDay) => d.level >= 3)
@@ -283,8 +314,8 @@ export const GithubHeatmap: React.FC<GithubHeatmapProps> = ({
         {/* Hardware Status LEDs */}
         <div className="flex items-center gap-3 text-[10px] text-[var(--text-muted)]">
           <div className="flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#00ff66] shadow-[0_0_4px_#00ff66]" />
-            <span>SYNC: LOCKED</span>
+            <span className={`w-1.5 h-1.5 rounded-full ${calendar ? 'bg-[#00ff66]' : 'bg-[#ffb000]'}`} />
+            <span>GITHUB: {error ? 'UNAVAILABLE' : calendar ? 'LOADED' : 'LOADING'}</span>
           </div>
           <div className="flex items-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full bg-[#ffb000] animate-pulse" />
@@ -312,15 +343,27 @@ export const GithubHeatmap: React.FC<GithubHeatmapProps> = ({
           />
         )}
 
+        <div role="status" className="relative z-20 mb-3 text-[11px] text-white/80">
+          {calendar ? (
+            <>
+              <a href="https://github.com/users/mooserini/contributions" target="_blank" rel="noopener noreferrer" className="underline">SOURCE: GITHUB PUBLIC CALENDAR</a>
+              {' • FETCHED: '}{new Date(calendar.fetchedAt).toLocaleString()}
+              {' • REFRESHES EVERY 15 MINUTES'}
+            </>
+          ) : error ? (
+            <>GitHub contributions are unavailable. <button className="underline cursor-pointer" onClick={() => setRetry(value => value + 1)}>Retry</button>{' or '}<a href={PERSONAL_INFO.githubUrl} className="underline">view GitHub</a>.</>
+          ) : 'Loading contributions from GitHub…'}
+        </div>
+        {summary && <>
         {/* Top Phosphor HUD Status line */}
         <div className="flex flex-wrap justify-between items-center text-[10px] pb-2 border-b border-white/10 mb-3 relative z-20">
           <div className="flex items-center gap-2">
             <span className="font-bold text-white tracking-widest">&gt;&gt; VRAM HEATMAP RASTER</span>
-            <span className="opacity-60">| 52 WEEKS (364 CYCLES)</span>
+            <span className="opacity-60">| {days[0].date} — {days[days.length - 1].date}</span>
           </div>
           <div className="flex items-center gap-3 text-white/80">
-            <span>TOTAL COMMITS: <strong className="text-white">{summary.totalContributions.toLocaleString()}</strong></span>
-            <span>STREAK: <strong className="text-white">{summary.currentStreak} DAYS</strong></span>
+            <span>CONTRIBUTIONS: <strong className="text-white">{summary.totalContributions.toLocaleString()}</strong></span>
+            <span title="Consecutive active days ending on the last date shown">STREAK: <strong className="text-white">{summary.currentStreak} DAYS</strong></span>
             <span className="hidden sm:inline">LONGEST: <strong className="text-white">{summary.longestStreak} DAYS</strong></span>
           </div>
         </div>
@@ -330,7 +373,7 @@ export const GithubHeatmap: React.FC<GithubHeatmapProps> = ({
           <div className="min-w-[690px]">
             <svg
               ref={svgRef}
-              viewBox="0 0 740 120"
+              viewBox={`0 0 ${38 + weekCount * 13.5 + 5} 120`}
               className="w-full h-auto block"
               aria-label="GitHub contribution activity heatmap graph"
             />
@@ -347,24 +390,19 @@ export const GithubHeatmap: React.FC<GithubHeatmapProps> = ({
                   <span>{activeDisplayDay.date} ({dayNames[activeDisplayDay.weekday]})</span>
                 </div>
                 <div className="text-[10px] opacity-75">
-                  VRAM MATRIX: COL {activeDisplayDay.weekIndex + 1}/52 • ROW {activeDisplayDay.weekday + 1}/7
+                  VRAM MATRIX: COL {activeDisplayDay.weekIndex + 1}/{weekCount} • ROW {activeDisplayDay.weekday + 1}/7
                 </div>
               </div>
 
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-white/85 text-[10px]">
                 <div>
-                  LOGGED COMMITS: <strong className="text-white">{activeDisplayDay.count}</strong>
+                  CONTRIBUTIONS: <strong className="text-white">{activeDisplayDay.count}</strong>
                 </div>
                 <div>
                   INTENSITY TIER: <strong className="text-white">LEVEL {activeDisplayDay.level}/4</strong>
                 </div>
-                {activeDisplayDay.repoHint && (
-                  <div>
-                    ACTIVE REPO: <span className="underline decoration-dotted text-white">{activeDisplayDay.repoHint}</span>
-                  </div>
-                )}
                 <div>
-                  CYCLE STATUS: <span className="text-[#55ff77]">{activeDisplayDay.count > 0 ? 'COMMIT_RECORD_VERIFIED' : 'NO_CYCLE_COMMITS'}</span>
+                  CYCLE STATUS: <span className="text-[#55ff77]">{activeDisplayDay.count > 0 ? 'CONTRIBUTIONS_RECORDED' : 'NO_CONTRIBUTIONS'}</span>
                 </div>
               </div>
             </div>
@@ -372,7 +410,7 @@ export const GithubHeatmap: React.FC<GithubHeatmapProps> = ({
             <div className="flex items-center justify-between text-white/60 text-[10px]">
               <div className="flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 bg-white/40 animate-ping inline-block" />
-                <span>HOVER CURSOR OVER MATRIX CELLS TO QUERY VRAM COMMIT AUDIT RECORDS.</span>
+                <span>HOVER OVER A DAY TO SEE ITS GITHUB CONTRIBUTIONS.</span>
               </div>
               <span className="hidden sm:inline opacity-60">CLICK CELL TO LOCK TELEMETRY READOUT</span>
             </div>
@@ -390,13 +428,13 @@ export const GithubHeatmap: React.FC<GithubHeatmapProps> = ({
                 <div 
                   key={i} 
                   className="flex items-center gap-1"
-                  title={`Level ${i}: ${i === 0 ? '0' : i === 1 ? '1-2' : i === 2 ? '3-6' : i === 3 ? '7-11' : '12+'} commits`}
+                  title={`GitHub intensity level ${i} of 4`}
                 >
                   <span 
                     className="w-2.5 h-2.5 rounded-[1px] inline-block border border-white/20"
                     style={{ backgroundColor: c }}
                   />
-                  <span className="text-[9px] opacity-75">{i === 0 ? '0' : i === 4 ? '12+' : ''}</span>
+                  <span className="text-[9px] opacity-75">{i === 0 ? '0' : ''}</span>
                 </div>
               ))}
               <span>MORE</span>
@@ -405,11 +443,11 @@ export const GithubHeatmap: React.FC<GithubHeatmapProps> = ({
 
           {/* Quick Metrics */}
           <div className="flex items-center gap-3">
-            <span>BURST PEAK: <strong className="text-white">{summary.busiestDay.count} COMMITS</strong> ({summary.busiestDay.date})</span>
-            <span className="hidden md:inline">ACTIVE DAYS: <strong className="text-white">{summary.activeDaysCount} / 364</strong></span>
+            <span>BURST PEAK: <strong className="text-white">{summary.busiestDay.count} CONTRIBUTIONS</strong> ({summary.busiestDay.date || 'none'})</span>
+            <span className="hidden md:inline">ACTIVE DAYS: <strong className="text-white">{summary.activeDaysCount} / {days.length}</strong></span>
           </div>
         </div>
-
+        </>}
       </div>
 
       {/* Retro Chassis Bottom Rim */}

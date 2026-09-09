@@ -1,151 +1,32 @@
-import {
-  getCurrentRefinementSession,
-  loginRefinementSession,
-  clearRefinementSession,
-  getStagedRefinements,
-  addRefinementItem,
-  removeRefinementItem,
-  clearAllRefinements,
-  buildSingleIterationPrompt,
-  buildBatchIterationPrompt,
-} from '../utils/refinementService';
-
-describe('Refinement Loop & Session Service', () => {
-  let store: Record<string, string> = {};
-
-  beforeAll(() => {
-    const localStorageMock = {
-      getItem: (key: string) => store[key] || null,
-      setItem: (key: string, value: string) => {
-        store[key] = value.toString();
-      },
-      removeItem: (key: string) => {
-        delete store[key];
-      },
-      clear: () => {
-        store = {};
-      },
-    };
-
-    Object.defineProperty(global, 'localStorage', {
-      value: localStorageMock,
-      writable: true,
-      configurable: true,
-    });
-    Object.defineProperty(global, 'window', {
-      value: { localStorage: localStorageMock },
-      writable: true,
-      configurable: true,
-    });
-  });
-
-  beforeEach(() => {
-    store = {};
-  });
-
-  test('should return null when no session is active', () => {
-    expect(getCurrentRefinementSession()).toBeNull();
-  });
-
-  test('should initialize and persist session on login with user ID', () => {
-    const session = loginRefinementSession('mooserini');
-    expect(session.isAuthenticated).toBe(true);
-    expect(session.userId).toBe('mooserini');
-    expect(session.sessionId).toContain('REF-9025-');
-    expect(session.authMethod).toBe('userId-passkey');
-
-    const retrieved = getCurrentRefinementSession();
-    expect(retrieved?.userId).toBe('mooserini');
-  });
-
-  test('should fallback to mooserini when blank user ID is provided', () => {
-    const session = loginRefinementSession('   ');
-    expect(session.userId).toBe('mooserini');
-  });
-
-  test('should clear session on logout', () => {
-    loginRefinementSession('mooserini');
-    expect(getCurrentRefinementSession()).not.toBeNull();
-
-    clearRefinementSession();
-    expect(getCurrentRefinementSession()).toBeNull();
-  });
-
-  test('should stage refinement items to ledger', () => {
-    const item = addRefinementItem({
-      userId: 'mooserini',
-      category: 'huggingface',
-      title: 'Add Hermes Qwen weights to Hugging Face profile',
-      details: 'Publish 4-bit and 8-bit GGUF quantized models under @mooserini',
-      priority: 'high',
-    });
-
-    expect(item.id).toContain('REF-ITEM-');
-    expect(item.status).toBe('staged');
-
-    const staged = getStagedRefinements();
-    expect(staged.length).toBe(1);
-    expect(staged[0].title).toBe('Add Hermes Qwen weights to Hugging Face profile');
-    expect(staged[0].category).toBe('huggingface');
-  });
-
-  test('should remove staged refinement item by id', () => {
-    const item1 = addRefinementItem({
-      userId: 'mooserini',
-      category: 'project',
-      title: 'Item 1',
-      details: 'Details 1',
-      priority: 'normal',
-    });
-
-    const item2 = addRefinementItem({
-      userId: 'mooserini',
-      category: 'skill',
-      title: 'Item 2',
-      details: 'Details 2',
-      priority: 'immediate',
-    });
-
-    expect(getStagedRefinements().length).toBe(2);
-
-    removeRefinementItem(item1.id);
-    const remaining = getStagedRefinements();
-    expect(remaining.length).toBe(1);
-    expect(remaining[0].id).toBe(item2.id);
-  });
-
-  test('should clear all staged refinements', () => {
-    addRefinementItem({
-      userId: 'mooserini',
-      category: 'general',
-      title: 'Item',
-      details: 'Details',
-      priority: 'normal',
-    });
-
-    expect(getStagedRefinements().length).toBe(1);
-    clearAllRefinements();
-    expect(getStagedRefinements().length).toBe(0);
-  });
-
-  test('should construct formatted single and batch iteration prompts', () => {
-    const item = addRefinementItem({
-      userId: 'mooserini',
-      category: 'huggingface',
-      title: 'Model Checkpoint',
-      details: 'Include safetensors weights',
-      priority: 'high',
-    });
-
-    const singlePrompt = buildSingleIterationPrompt(item);
-    expect(singlePrompt).toContain('[ARCHITECT REFINEMENT ITERATION REQUEST]');
-    expect(singlePrompt).toContain('mooserini');
-    expect(singlePrompt).toContain('HUGGINGFACE');
-    expect(singlePrompt).toContain('Model Checkpoint');
-    expect(singlePrompt).toContain('Include safetensors weights');
-
-    const batchPrompt = buildBatchIterationPrompt([item]);
-    expect(batchPrompt).toContain('[BATCH ARCHITECT REFINEMENT ITERATIONS — 1 ITEM(S) STAGED]');
-    expect(batchPrompt).toContain('Model Checkpoint');
-  });
+import { addRefinementItem, getStagedRefinements, getLegacyDrafts, buildSingleIterationPrompt } from '../utils/refinementService';
+import type { RefinementItem } from '../types';
+const record: RefinementItem = { id: 'receipt-1', userId: 'verified-account', author: 'Visitor', role: 'visitor', category: 'general', title: 'Correct a link', details: 'Use the public repository.', priority: 'normal', status: 'submitted', createdAt: '2026-09-09T00:00:00Z', authentication: { method: 'passkey', verifiedAt: '2026-09-08T23:59:00Z', credentialId: 'key-1' }, contentHash: 'sha256' };
+afterEach(() => jest.restoreAllMocks());
+test('requires the server to accept the suggestion and returns its attribution', async () => {
+  const fetchMock = jest.spyOn(global, 'fetch').mockResolvedValue(new Response(JSON.stringify({ item: record }), { status: 201 }));
+  const input = { title: record.title, details: record.details, category: record.category, priority: record.priority };
+  expect(await addRefinementItem(input)).toEqual(record);
+  expect(JSON.parse(fetchMock.mock.calls[0][1]?.body as string)).toEqual(input);
+  expect(fetchMock.mock.calls[0][1]?.credentials).toBe('same-origin');
+});
+test('an unauthenticated response cannot become a local authenticated refinement', async () => {
+  jest.spyOn(global, 'fetch').mockImplementation(async () => new Response(JSON.stringify({ error: 'Sign in first' }), { status: 401 }));
+  await expect(addRefinementItem({ title: 'A', details: 'B', category: 'general', priority: 'normal' })).rejects.toThrow('Sign in first');
+  await expect(getStagedRefinements()).rejects.toThrow('Sign in first');
+});
+test('exports separate author, owner and chosen assistant plus the server receipt', () => {
+  const brief = buildSingleIterationPrompt(record, 'Hermes');
+  expect(brief).toContain('Site owner: Thomas Kenny');
+  expect(brief).toContain('Assistant selected for handoff: Hermes');
+  expect(brief).toContain('"userId": "verified-account"');
+  expect(brief).toContain('"method": "passkey"');
+  expect(brief).toContain('Visitor suggestions require the site owner');
+  expect(brief).not.toContain('AI Studio');
+});
+test('preserves old browser drafts without treating them as server records', () => {
+  const original = JSON.stringify([{ title: 'Old draft', userId: 'mooserini', isAuthenticated: true }]);
+  const setItem = jest.fn();
+  Object.defineProperty(global, 'localStorage', { configurable: true, value: { getItem: () => original, setItem } });
+  expect(getLegacyDrafts()).toEqual(JSON.parse(original));
+  expect(setItem).not.toHaveBeenCalled();
 });

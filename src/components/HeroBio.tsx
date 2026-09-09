@@ -3,6 +3,7 @@ import { Terminal, Shield, ExternalLink, Mail, Key, Wrench, Bot } from 'lucide-r
 import { PERSONAL_INFO } from '../data/portfolioData';
 import { retroAudio } from '../utils/audio';
 import { Logo } from './Logo';
+import { ProfileCredentialCards } from './ProfileCredentialCards';
 
 interface HeroBioProps {
   onOpenGpg: () => void;
@@ -10,7 +11,7 @@ interface HeroBioProps {
   onOpenRefinement?: () => void;
 }
 
-export const HeroBio: React.FC<HeroBioProps> = ({ onOpenGpg, onOpenFido, onOpenRefinement }) => {
+export const HeroBio: React.FC<HeroBioProps> = ({ onOpenGpg, onOpenRefinement }) => {
   return (
     <section id="biography" className="py-8 sm:py-12">
       {/* 80s ASCII Art Representation of The Resonant Mirror */}
@@ -26,17 +27,19 @@ export const HeroBio: React.FC<HeroBioProps> = ({ onOpenGpg, onOpenFido, onOpenR
         <div className="p-6 sm:p-8 border-b border-[var(--border-color)] bg-[var(--bg-secondary)]">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
             
-            {/* Resonant Mirror Crest */}
+            {/* Public profile portrait, kept in sync with GitHub */}
             <div className="flex-shrink-0 relative group">
               <div className="w-28 h-28 sm:w-36 sm:h-36 p-2 bg-[var(--bg-primary)] border-2 border-[var(--border-strong)] flex items-center justify-center shadow-inner">
                 <img
-                  src="/resonant-mirror-crest.png"
-                  alt="Resonant Mirror Crest"
-                  className="w-full h-full object-contain filter contrast-125"
+                  src={PERSONAL_INFO.avatarUrl}
+                  alt={`${PERSONAL_INFO.name}'s avatar`}
+                  width={400}
+                  height={400}
+                  className="w-full h-full object-contain"
                 />
               </div>
               <span className="block text-center text-[10px] text-[var(--text-muted)] mt-1 font-mono uppercase">
-                HERMES CREST v2
+                @{PERSONAL_INFO.githubHandle}
               </span>
             </div>
 
@@ -53,9 +56,9 @@ export const HeroBio: React.FC<HeroBioProps> = ({ onOpenGpg, onOpenFido, onOpenR
               </h1>
 
               <div className="text-sm sm:text-base text-[var(--rm-headings)] font-semibold tracking-wide">
-                <span>ALIAS: {PERSONAL_INFO.alias}</span>
+                <span>ALIASES: {PERSONAL_INFO.alias}</span>
                 <span className="mx-2">•</span>
-                <span>{PERSONAL_INFO.brandName}</span>
+                <span>BRAND: {PERSONAL_INFO.brandName}</span>
               </div>
 
               <p className="text-xs sm:text-sm text-[var(--text-secondary)] font-mono">
@@ -65,66 +68,22 @@ export const HeroBio: React.FC<HeroBioProps> = ({ onOpenGpg, onOpenFido, onOpenR
               {/* Sub-header Rainbow Border Accent */}
               <div className="rainbow-border-subtle h-[2px] w-full max-w-md my-3" />
 
-              {/* Quick Metadata Chips */}
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-1 text-[11px] font-mono">
-                <div className="p-1.5 border border-[var(--border-color)] bg-[var(--bg-primary)]">
-                  <span className="text-[var(--text-muted)] block text-[10px]">ORCID ID</span>
-                  <a 
-                    href={PERSONAL_INFO.orcidUrl} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-[var(--rm-accent-bright)] hover:underline truncate block"
-                    title={PERSONAL_INFO.orcid}
-                  >
-                    {PERSONAL_INFO.orcid}
-                  </a>
-                </div>
+              <ProfileCredentialCards onOpenGpg={onOpenGpg} />
 
-                <div className="p-1.5 border border-[var(--border-color)] bg-[var(--bg-primary)]">
-                  <span className="text-[var(--text-muted)] block text-[10px]">HUGGING FACE</span>
-                  <a 
-                    href={PERSONAL_INFO.huggingFaceUrl} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-[var(--rm-headings)] hover:underline truncate block font-bold"
-                    title={`Hugging Face Profile: ${PERSONAL_INFO.huggingFaceUrl}`}
-                  >
-                    @{PERSONAL_INFO.huggingFaceHandle}
-                  </a>
-                </div>
-
-                <div className="p-1.5 border border-[var(--border-color)] bg-[var(--bg-primary)]">
-                  <span className="text-[var(--text-muted)] block text-[10px]">GPG KEY ID</span>
-                  <button 
-                    onClick={() => {
-                      retroAudio.playKeyclick();
-                      onOpenGpg();
-                    }}
-                    className="text-[var(--text-primary)] hover:text-[var(--rm-accent-bright)] hover:underline truncate block text-left cursor-pointer font-bold"
-                  >
-                    {PERSONAL_INFO.gpgKeyId}
-                  </button>
-                </div>
-
-                <div className="p-1.5 border border-[var(--border-color)] bg-[var(--bg-primary)]">
-                  <span className="text-[var(--text-muted)] block text-[10px]">HARDWARE AUTH</span>
-                  <button
-                    onClick={() => {
-                      retroAudio.playKeyclick();
-                      onOpenFido();
-                    }}
-                    className="text-[var(--rm-status)] hover:underline truncate block text-left cursor-pointer font-bold"
-                  >
-                    FIDO2 / PASSKEY
-                  </button>
-                </div>
-
-                <div className="p-1.5 border border-[var(--border-color)] bg-[var(--bg-primary)]">
-                  <span className="text-[var(--text-muted)] block text-[10px]">FONT ENGINE</span>
-                  <span className="text-[var(--text-primary)] truncate block">
-                    Ac437 PC6300
-                  </span>
-                </div>
+              <div className="pt-3 flex flex-wrap items-center justify-center md:justify-start gap-3">
+                <a
+                  href="/red-door"
+                  onClick={() => retroAudio.playKeyclick()}
+                  className="retro-btn px-4 py-2 text-xs sm:text-sm font-bold inline-flex items-center gap-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+                  id="hero-play-red-door"
+                  aria-describedby="red-door-entry-hint"
+                >
+                  <Terminal className="w-4 h-4 text-[var(--rm-status)]" aria-hidden="true" />
+                  <span>[ PLAY RED DOOR BBS ]</span>
+                </a>
+                <p id="red-door-entry-hint" className="text-xs text-[var(--text-secondary)]">
+                  At the terminal, type <code>reddoor</code> to enter the game.
+                </p>
               </div>
 
             </div>

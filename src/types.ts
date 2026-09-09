@@ -2,16 +2,15 @@ export interface Project {
   id: string;
   title: string;
   codename: string;
-  category: 'systems' | 'retro' | 'security' | 'ai';
+  category: 'systems' | 'retro' | 'security' | 'ai' | 'web';
   summary: string;
   description: string;
   year: string;
   tags: string[];
-  metrics?: string;
   link?: string;
-  repoUrl?: string;
+  repoUrl: string;
+  sourceKind: 'repository' | 'contribution';
   featured: boolean;
-  retroOutput?: string;
 }
 
 export interface SkillCategory {
@@ -40,7 +39,7 @@ export interface FidoSession {
   isAuthenticated: boolean;
   credentialId?: string;
   algorithm?: string;
-  authenticatorType?: 'platform' | 'cross-platform' | 'hardware-sim';
+  authenticatorType?: 'platform' | 'cross-platform' | 'passkey';
   userHandle?: string;
   timestamp?: number;
   securityLevel?: string;
@@ -79,34 +78,40 @@ export interface Achievement {
   unlockedAt?: string;
 }
 
+export interface RefinementSession {
+  isAuthenticated: true;
+  userId: string;
+  displayName: string;
+  role: 'owner' | 'visitor';
+  authMethod: 'passkey' | 'google';
+  credentialId: string | null;
+  authenticatedAt: string;
+  expiresAt: string;
+}
+
 export interface RefinementItem {
   id: string;
   userId: string;
+  author: string;
+  role: 'owner' | 'visitor';
   category: 'project' | 'huggingface' | 'skill' | 'bio' | 'easteregg' | 'general';
   title: string;
   details: string;
   priority: 'normal' | 'high' | 'immediate';
-  status: 'staged' | 'iterated';
+  status: 'submitted';
   createdAt: string;
-}
-
-export interface RefinementSession {
-  isAuthenticated: boolean;
-  userId: string;
-  sessionId: string;
-  startedAt: string;
-  authMethod: 'userId-passkey' | 'fido2-hardware';
+  authentication: { method: 'passkey' | 'google'; verifiedAt: string; credentialId: string | null };
+  contentHash: string;
 }
 
 export type HeatmapPhosphorMode = 'green' | 'amber' | 'white' | 'cga';
 
 export interface ContributionDay {
   date: string;       // YYYY-MM-DD
-  count: number;      // commit count
+  count: number;      // GitHub contribution count
   level: 0 | 1 | 2 | 3 | 4; // intensity tier
   weekday: number;    // 0 = Sunday, 6 = Saturday
   weekIndex: number;  // 0 to 52
-  repoHint?: string;  // sample repo touched
 }
 
 export interface ContributionSummary {

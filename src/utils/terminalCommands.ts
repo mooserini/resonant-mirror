@@ -105,7 +105,7 @@ AT&T PERSONAL COMPUTER 6300 — DIAGNOSTIC TELEMETRY
   CONVENTIONAL MEMORY : 640 KB Total [582 KB Base Available]
   EXPANDED MEMORY     : 2,048 KB LIM EMS 4.0 Specification
   VIDEO CONTROLLER    : Olivetti Color Display (CGA 640x400 Mode 06h)
-  FONT BITSTREAM      : Ac437 AT&T PC6300 (8x16 Pixel Raster, int10h.org)
+  FONT BITSTREAM      : Web AT&T PC6300 (int10h.org, CC BY-SA 4.0)
   TEXT RESOLUTION     : 80 Columns x 25 Lines (Phosphor Refresh 60 Hz)
   FIXED DISK DRIVE    : Seagate ST-225 (20 MB MFM, Cylinder 615, 4 Heads)
   DISK CONTROLLER     : Western Digital WD1002-WX1 MFM Interface
@@ -318,9 +318,9 @@ ${PERSONAL_INFO.huggingFaceUrl}`,
 ARCHITECT REFINEMENT & ITERATION LOOP
 ======================================================================
 Tap the [MAKE REFINEMENT] button in the navigation bar or bottom toolbar
-to enter an authenticated session loop with your User ID (${PERSONAL_INFO.huggingFaceHandle}).
-You can stage model updates, new projects, skill benchmarks, or general
-specifications, and generate 1-click iteration prompts for AI Studio.
+to sign in with a passkey or Google. Submit a suggestion with its verified
+authentication record, then preview and export a brief for your chosen assistant.
+Visitor suggestions require the site owner to review them.
 ======================================================================`,
         },
       ];
@@ -412,9 +412,9 @@ Review spaces and dispatch messages directly from the retro window.`,
           text: `FIDO2 / WEBAUTHN SUBSYSTEM STATUS:
   AUTHENTICATED  : ${active ? 'YES [SESSION ACTIVE]' : 'NO [UNAUTHENTICATED]'}
   CREDENTIAL ID  : ${context.fidoSession?.credentialId || 'NONE'}
-  ALGORITHM      : ${context.fidoSession?.algorithm || 'ES256 (P-256 ECDSA)'}
+  ALGORITHM      : ${context.fidoSession?.algorithm || 'NONE'}
   SECURITY LEVEL : ${context.fidoSession?.securityLevel || 'N/A'}
-  USER HANDLE    : ${context.fidoSession?.userHandle || 'architect.guest'}`,
+  USER HANDLE    : ${context.fidoSession?.userHandle || 'NOT SIGNED IN'}`,
         },
       ];
     }

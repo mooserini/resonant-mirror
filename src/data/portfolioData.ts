@@ -2,7 +2,7 @@ import { Project, SkillCategory, BlogPost } from '../types';
 
 export const PERSONAL_INFO = {
   name: 'Thomas Kenny',
-  alias: 'Uncle Russet / mooserini',
+  alias: 'Mooserini / Moosenberg',
   brandName: 'The Resonant Mirror',
   role: 'Systems Architect, Agentic Lineage & Cryptographic Security Engineer',
   location: 'Distributed / United States',
@@ -14,6 +14,7 @@ export const PERSONAL_INFO = {
   blogUrl: 'https://www.getadongle.com/#dispatches',
   githubUrl: 'https://github.com/mooserini',
   githubHandle: 'mooserini',
+  avatarUrl: 'https://avatars.githubusercontent.com/u/270805952?s=400&v=4',
   huggingFaceUrl: 'https://huggingface.co/mooserini',
   huggingFaceHandle: 'mooserini',
   linkedinUrl: 'https://www.linkedin.com/in/mooserini/',
@@ -40,107 +41,149 @@ MApar7gm60TEeRWJnDoBALiu4QTCkuvy1/ge0rVbJgxcVGMTU2Z3FuEGE3SKLzQH
 =mMJH
 -----END PGP PUBLIC KEY BLOCK-----`;
 
+// Curated from anonymously accessible repositories and a specific public contribution.
 export const PROJECTS: Project[] = [
   {
-    id: 'hermes-audit',
-    title: 'Hermes House Audit & Continuity System v2',
-    codename: 'HERMES-AUDIT-2026',
-    category: 'systems',
-    year: '2026',
-    summary: 'Autonomous agent operational audit, memory checksum continuity, and reproducible PDF lineage records.',
-    description: 'An end-to-end lineage tracking and state validation engine designed for autonomous agent deployments. Verifies working memory hashes against tamper-evident audit ledgers, generating archival reports with mathematical precision.',
-    metrics: '100% Deterministic Checksums • 0-Leak Boundary Validation • Sub-second Ledger Audits',
-    tags: ['Autonomous Agents', 'Cryptographic Ledger', 'State Continuity', 'TypeScript', 'Hermes Lineage'],
-    repoUrl: 'https://github.com/mooserini',
-    featured: true,
-    retroOutput: 'C:\\HERMES> AUDIT.EXE --VERIFY-HASHES\n[OK] Memory state: 0x8F4A19B2 - PASSED\n[OK] Lineage sequence: HERMES-09 - PASSED\n[OK] Signature valid: mooserini GPG key'
+    "id": "hermes-config-guardian",
+    "title": "Hermes Config Guardian",
+    "codename": "CONFIG-GUARDIAN",
+    "category": "security",
+    "year": "2026",
+    "summary": "Independent macOS menu-bar tool for reviewing Hermes configuration changes and restoring a human-approved snapshot. Includes read-only skill-state indicators.",
+    "description": "Independent macOS menu-bar tool for reviewing Hermes configuration changes and restoring a human-approved snapshot. Includes read-only skill-state indicators.",
+    "tags": [
+      "Swift",
+      "macOS",
+      "Configuration review"
+    ],
+    "repoUrl": "https://github.com/mooserini/hermes-config-guardian",
+    "sourceKind": "repository",
+    "featured": true
   },
   {
-    id: 'md-pdf-generator',
-    title: 'Retro Markdown to PDF Generator v2',
-    codename: 'MDTOPDF-PC6300',
-    category: 'retro',
-    year: '2026',
-    summary: 'CGA-themed document publishing suite utilizing the authentic AT&T PC6300 bitstream font and spectral borders.',
-    description: 'Transforms structured Markdown documents into publication-grade archival PDFs. Incorporates custom CSS variables, document crests, spectral gradient rules, and the exact Ac437 AT&T PC6300 retro font.',
-    metrics: '640x400 Optical Rasterization • Strict CSS Paged Media • Multi-column Print Layout',
-    tags: ['CGA Bitstream', 'AT&T PC6300', 'Document Engineering', 'PostCSS', 'Puppeteer'],
-    repoUrl: 'https://github.com/mooserini',
-    link: 'https://int10h.org/oldschool-pc-fonts/fontlist/font?att_pc6300',
-    featured: true,
-    retroOutput: 'C:\\BIN> MDTOPDF.COM REPORT.MD --THEME=CGA_ATT6300\nCompiling font tables: PC6300.WOF (9.8 KB)\nRendering 2-column layout...\nDocument crest attached. Output: REPORT.PDF'
+    "id": "hermes-secure-launcher",
+    "title": "Hermes Secure Launcher",
+    "codename": "SECURE-LAUNCHER",
+    "category": "security",
+    "year": "2026",
+    "summary": "Independent macOS menu-bar controller for starting, stopping, and checking a Hermes gateway through a Keychain-backed launchd definition.",
+    "description": "Independent macOS menu-bar controller for starting, stopping, and checking a Hermes gateway through a Keychain-backed launchd definition.",
+    "tags": [
+      "Swift",
+      "macOS",
+      "Keychain",
+      "launchd"
+    ],
+    "repoUrl": "https://github.com/mooserini/hermes-secure-launcher",
+    "sourceKind": "repository",
+    "featured": true
   },
   {
-    id: 'resonant-mirror-vault',
-    title: 'Resonant Mirror Vault & Key Orchestrator',
-    codename: 'RESONANT-VAULT',
-    category: 'security',
-    year: '2025-2026',
-    summary: 'Hardware-backed FIDO2 / WebAuthn passkey custody, GPG ring automation, and macOS Launchd integration.',
-    description: 'A sovereign identity and authentication boundary that pairs WebAuthn platform authenticators (TouchID, YubiKey) with local daemon process isolation, preventing unauthorized token extraction.',
-    metrics: 'FIDO2 Level 2 Attestation • Zero Plaintext Secrets on Disk • Biometric Gating',
-    tags: ['FIDO2 / WebAuthn', 'Passkeys', 'GPG Cryptography', 'macOS Launchd', 'Python CLI'],
-    repoUrl: 'https://github.com/mooserini',
-    featured: true,
-    retroOutput: 'FIDO2 SUB-SYSTEM INIT...\nQuerying authenticator on USB Bus 0...\nCredential challenge validated. Token ID: RM-9025-FIDO\nAccess Granted.'
+    "id": "mac-inac-sendblue",
+    "title": "Mac-Inac iMessage Bridge",
+    "codename": "MAC-INAC",
+    "category": "systems",
+    "year": "2026",
+    "summary": "Python iMessage bridge for CLI-driven agents, with SendBlue transport and independent, read-only observation of Apple Messages receipts.",
+    "description": "Python iMessage bridge for CLI-driven agents, with SendBlue transport and independent, read-only observation of Apple Messages receipts.",
+    "tags": [
+      "Python",
+      "iMessage",
+      "SendBlue",
+      "Receipt observation"
+    ],
+    "repoUrl": "https://github.com/mooserini/mac-inac-sendblue",
+    "sourceKind": "repository",
+    "featured": true
   },
   {
-    id: 'context-key-engine',
-    title: 'Context-Key Cognitive Routing Engine',
-    codename: 'CTX-KEY-ROUTER',
-    category: 'ai',
-    year: '2025',
-    summary: 'High-concurrency token routing and KV-cache manager for local inference clusters (Qwen, Ollama, DeepSeek).',
-    description: 'Optimizes attention matrices across multi-tenant local model execution. Dynamically shards prompt context to reduce redundant KV computations and maintain low latency under batch workloads.',
-    metrics: '3.4x KV Cache Reuse • 42ms First-Token Latency • 64k Context Window Pinning',
-    tags: ['Local LLMs', 'Qwen 2.5', 'Ollama API', 'PyTorch', 'Vector Indexing'],
-    repoUrl: 'https://github.com/mooserini',
-    featured: true,
-    retroOutput: 'CTX_ALLOC: Segment 0..16384 pinned to VRAM0\nCache hit ratio: 87.4%\nDispatched prompt tokens: 1,840 to Qwen-14B'
+    "id": "resonant-mirror",
+    "title": "The Resonant Mirror Portfolio",
+    "codename": "RESONANT-MIRROR",
+    "category": "web",
+    "year": "2026",
+    "summary": "The React and TypeScript portfolio behind this site, with a CRT-inspired interface, contribution calendar, and profile cards. Uses the credited Oldschool PC Font Pack.",
+    "description": "The React and TypeScript portfolio behind this site, with a CRT-inspired interface, contribution calendar, and profile cards. Uses the credited Oldschool PC Font Pack.",
+    "tags": [
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "D3"
+    ],
+    "repoUrl": "https://github.com/mooserini/resonant-mirror",
+    "sourceKind": "repository",
+    "featured": true,
+    "link": "https://www.getadongle.com/index.html"
   },
   {
-    id: 'huggingface-models',
-    title: 'Hugging Face Public Model & Weight Repositories',
-    codename: 'HF-MOOSERINI',
-    category: 'ai',
-    year: '2025-2026',
-    summary: 'Public model weights, GGUF quantizations, and agentic dataset checkpoints hosted under @mooserini.',
-    description: 'Centralized public Hugging Face repository hub featuring quantized open weights (GGUF/safetensors), fine-tuned adapters for autonomous agent continuity, custom tokenizer configurations, and evaluation benchmarks for the Hermes House lineage.',
-    metrics: 'GGUF Quantizations • Open-Weight Checkpoints • 100% Deterministic Evaluations',
-    tags: ['Hugging Face', 'Transformers', 'Model Weights', 'GGUF', 'Local Inference', 'Hermes House'],
-    repoUrl: 'https://huggingface.co/mooserini',
-    link: 'https://huggingface.co/mooserini',
-    featured: true,
-    retroOutput: 'HF_HUB: Connecting to huggingface.co/mooserini...\n[OK] User: mooserini (Verified Hub Contributor)\n[OK] Model registry synced: GGUF / safetensors / evaluation benchmarks'
+    "id": "mirror_landing_page",
+    "title": "Original CRT Landing Page",
+    "codename": "CRT-LANDING",
+    "category": "retro",
+    "year": "2026",
+    "summary": "Self-contained landing page with a simulated BIOS boot, terminal commands, and a public work manifest. Uses the AT&T PC6300 font from the Oldschool PC Font Pack.",
+    "description": "Self-contained landing page with a simulated BIOS boot, terminal commands, and a public work manifest. Uses the AT&T PC6300 font from the Oldschool PC Font Pack.",
+    "tags": [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "Retro computing"
+    ],
+    "repoUrl": "https://github.com/mooserini/mirror_landing_page",
+    "sourceKind": "repository",
+    "featured": false
   },
   {
-    id: 'sendblue-imessage-bridge',
-    title: 'SendBlue iMessage Transport Daemon',
-    codename: 'SENDBLUE-GATEWAY',
-    category: 'systems',
-    year: '2025',
-    summary: 'Secure background bridge routing mobile push notifications and agent dispatches via encrypted transport.',
-    description: 'Background daemon bridging autonomous agent event loops to secure mobile communication channels, featuring retry queues, failure backoffs, and cryptographic delivery confirmations.',
-    metrics: '99.98% Message Delivery • 200ms Dispatch Latency • Offline Queueing',
-    tags: ['iMessage API', 'Background Daemons', 'System Orchestration', 'Node.js', 'SQLite'],
-    repoUrl: 'https://github.com/mooserini/mac-inac-sendblue',
-    featured: false,
-    retroOutput: 'SENDBLUE.SYS: Listening on loopback port 8443...\nOutbound dispatch ACK #512 sent.\nReceipt verified via client signature.'
+    "id": "vesper-real-weather-lab",
+    "title": "Vesper Real Weather Lab",
+    "codename": "VESPER-WEATHER",
+    "category": "web",
+    "year": "2026",
+    "summary": "Client-side weather prototype that maps Open-Meteo conditions to an animated character, lighting, and motion. Includes place search and optional geolocation.",
+    "description": "Client-side weather prototype that maps Open-Meteo conditions to an animated character, lighting, and motion. Includes place search and optional geolocation.",
+    "tags": [
+      "HTML",
+      "SVG",
+      "Open-Meteo",
+      "Weather"
+    ],
+    "repoUrl": "https://github.com/mooserini/vesper-real-weather-lab",
+    "sourceKind": "repository",
+    "featured": false
   },
   {
-    id: 'cga-typography-suite',
-    title: 'CGA 80x25 Oldschool PC Font Engine',
-    codename: 'PC6300-TYPO-ENGINE',
-    category: 'retro',
-    year: '2024-2025',
-    summary: 'Web-native vector and bitmap rendering library for vintage PC BIOS and terminal fonts.',
-    description: 'Ported classic Olivetti / AT&T PC6300 and IBM CGA character roms into zero-aliasing, modern webfont packages with sub-pixel alignment and customizable CRT phosphor simulation.',
-    metrics: '8x16 Pixel Aspect Exact • 0ms FOIT via Embedded Data URIs • 100% Glyph Coverage',
-    tags: ['Retro Computing', 'WebFonts', 'CGA Graphics', 'CSS Houdini', 'Canvas'],
-    repoUrl: 'https://github.com/mooserini',
-    link: 'https://int10h.org/oldschool-pc-fonts/fontlist/font?att_pc6300',
-    featured: false,
-    retroOutput: 'CGA MATRIX LOADED: 256 Character Codes (0x00..0xFF)\nGlyph dimensions: 8x16 dots\nDisplay mode: Mode 06h (640x400 b&w / 80x25)'
+    "id": "resonant-railway",
+    "title": "Resonant Railway Task Server",
+    "codename": "TASK-MCP",
+    "category": "systems",
+    "year": "2026",
+    "summary": "A small MCP server for creating, listing, and completing tasks stored in Cloudflare D1. The public repository documents configuration, authentication, and offline tests.",
+    "description": "A small MCP server for creating, listing, and completing tasks stored in Cloudflare D1. The public repository documents configuration, authentication, and offline tests.",
+    "tags": [
+      "TypeScript",
+      "MCP",
+      "Cloudflare D1"
+    ],
+    "repoUrl": "https://github.com/mooserini/resonant-railway",
+    "sourceKind": "repository",
+    "featured": false
+  },
+  {
+    "id": "hermes-image-patch-recovery",
+    "title": "Hermes Image Patch-Limit Recovery",
+    "codename": "HERMES-PR-106186",
+    "category": "ai",
+    "year": "2026",
+    "summary": "A proposed upstream fix for image patch-limit errors.",
+    "description": "Proposed fix for image patch-limit errors in Hermes Agent. Routes oversized requests through resize/retry handling, with regression tests covering original files and conversation history.",
+    "tags": [
+      "Python",
+      "Image handling",
+      "Regression tests"
+    ],
+    "repoUrl": "https://github.com/NousResearch/hermes-agent/pull/106186",
+    "sourceKind": "contribution",
+    "featured": false
   }
 ];
 

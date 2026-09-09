@@ -15,7 +15,7 @@ import { OfflineFallback } from './components/OfflineFallback';
 import { GoogleChatModal } from './components/GoogleChatModal';
 import { Wrench, WifiOff } from 'lucide-react';
 import { FidoSession } from './types';
-import { getCurrentFidoSession } from './utils/fidoAuth';
+import { getCurrentFidoSession, refreshFidoSession } from './utils/fidoAuth';
 import { retroAudio } from './utils/audio';
 
 export default function App() {
@@ -61,6 +61,14 @@ export default function App() {
 
   const [audioMuted, setAudioMuted] = useState<boolean>(true);
   const [fidoSession, setFidoSession] = useState<FidoSession | null>(() => getCurrentFidoSession());
+  useEffect(() => {
+    const refresh = () => { void refreshFidoSession().then(setFidoSession); };
+    refresh();
+    window.addEventListener('portfolio-auth-changed', refresh);
+    window.addEventListener('focus', refresh);
+    const timer = setInterval(refresh, 60000);
+    return () => { window.removeEventListener('portfolio-auth-changed', refresh); window.removeEventListener('focus', refresh); clearInterval(timer); };
+  }, []);
   const [isFidoModalOpen, setIsFidoModalOpen] = useState(false);
   const [isGpgModalOpen, setIsGpgModalOpen] = useState(false);
   const [isBlogModalOpen, setIsBlogModalOpen] = useState(false);
@@ -234,7 +242,6 @@ export default function App() {
           {/* Footer */}
           <Footer
             onOpenGpg={() => setIsGpgModalOpen(true)}
-            onOpenBlog={() => setIsBlogModalOpen(true)}
             onOpenRefinement={() => setIsRefinementModalOpen(true)}
           />
 

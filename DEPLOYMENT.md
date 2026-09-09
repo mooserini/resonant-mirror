@@ -85,3 +85,25 @@ Live validation on 2026-09-07 confirmed:
 The hosting account's existing Cloudflare JavaScript checks may inject scripts
 into HTML or block some automated clients; the deployed app was checked in the
 browser as well as with curl. These zone settings were not changed.
+
+## Public GitHub contribution calendar
+
+`GET /github-contributions.json` reads `https://github.com/users/mooserini/contributions`
+without authentication and preserves the public calendar's daily counts and intensity
+levels. GitHub's public HTML is not a versioned API: markup changes, missing day
+counts, nonconsecutive dates, and total mismatches return HTTP 502, never sample data.
+The source dates can differ from a signed-in GitHub calendar's timezone presentation.
+
+Successful responses are cached at the edge for 15 minutes. The UI refreshes on load
+and every 15 minutes and displays the fetch time, source link, and date range. Failure
+shows an unavailable message with retry and GitHub links. Streaks and peak/active-day
+metrics are computed from the displayed days; the ending streak includes the final
+source day, even if it has no contributions. Counts are contributions, not just commits.
+
+`npm run check:worker` includes real Workers-runtime calendar parsing, caching,
+credential-isolation, and failure tests against a reduced public HTML fixture fetched
+on 2026-09-09. `npm test -- --runInBand` validates dates and derived metrics.
+
+## Verified refinement workspace
+
+The portfolio Worker now owns `/portfolio-api/*` and the separate `REFINEMENTS_DB` D1 database. Apply `worker/migrations` before publishing. Configure `OWNER_GOOGLE_EMAIL` as a Worker secret, then have the owner sign in with Google and enroll a passkey. See `AUTHENTICATION.md` for the exact authority boundaries and local test procedure. Existing browser passkeys and local drafts are preserved; legacy success flags do not establish authentication.

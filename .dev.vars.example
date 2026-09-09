@@ -1,0 +1,2 @@
+# Bootstrap owner email; used only after a verified Google sign-in.
+OWNER_GOOGLE_EMAIL=owner@example.com

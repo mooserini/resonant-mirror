@@ -1,39 +1,24 @@
 import React, { useState } from 'react';
-import { 
-  Terminal, 
-  ExternalLink, 
-  Github, 
-  FolderGit2, 
-  ChevronDown, 
-  ChevronUp, 
-  Layers,
-  Sparkles
-} from 'lucide-react';
-import { Project } from '../types';
-import { PERSONAL_INFO, PROJECTS } from '../data/portfolioData';
+import { ExternalLink, Github, FolderGit2 } from 'lucide-react';
+import { PROJECTS } from '../data/portfolioData';
 import { retroAudio } from '../utils/audio';
 import { GithubHeatmap } from './GithubHeatmap';
 
 export const ProjectsSection: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string>('all');
-  const [expandedOutputId, setExpandedOutputId] = useState<string | null>('hermes-audit');
 
   const categories = [
     { id: 'all', label: 'ALL REGISTERS' },
     { id: 'systems', label: 'SYSTEMS & AGENTS' },
-    { id: 'security', label: 'SECURITY & FIDO' },
+    { id: 'security', label: 'SECURITY' },
     { id: 'retro', label: 'RETRO & CGA' },
-    { id: 'ai', label: 'NEURAL / LLM' },
+    { id: 'ai', label: 'AI & AGENTS' },
+    { id: 'web', label: 'WEB & VISUALS' },
   ];
 
   const filteredProjects = activeCategory === 'all' 
     ? PROJECTS 
     : PROJECTS.filter((p) => p.category === activeCategory);
-
-  const toggleOutput = (id: string) => {
-    retroAudio.playKeyclick();
-    setExpandedOutputId((prev) => (prev === id ? null : id));
-  };
 
   return (
     <section id="projects" className="py-8 sm:py-12">
@@ -50,7 +35,7 @@ export const ProjectsSection: React.FC = () => {
               PROJECTS &amp; SYSTEMS SHOWCASE
             </h2>
             <p className="text-xs sm:text-sm text-[var(--text-secondary)] font-mono mt-1">
-              Verified repositories, cryptographic continuity engines, and retro graphics tools.
+              Public repositories and specific contributions. Follow each source to inspect the work without signing in.
             </p>
           </div>
 
@@ -91,7 +76,6 @@ export const ProjectsSection: React.FC = () => {
         {/* Projects Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {filteredProjects.map((project) => {
-            const isOutputOpen = expandedOutputId === project.id;
             return (
               <div
                 key={project.id}
@@ -121,12 +105,6 @@ export const ProjectsSection: React.FC = () => {
                     )}
                   </div>
 
-                  {project.metrics && (
-                    <div className="mt-2.5 text-[11px] font-mono text-[var(--rm-status)] bg-[var(--bg-primary)] px-2.5 py-1 border border-[var(--border-color)] flex items-center gap-1.5">
-                      <Sparkles className="w-3.5 h-3.5 flex-shrink-0" />
-                      <span className="truncate">{project.metrics}</span>
-                    </div>
-                  )}
                 </div>
 
                 {/* Card Body */}
@@ -147,42 +125,11 @@ export const ProjectsSection: React.FC = () => {
                     ))}
                   </div>
 
-                  {/* Expandable Retro Console Output */}
-                  {project.retroOutput && (
-                    <div className="pt-2">
-                      <button
-                        onClick={() => toggleOutput(project.id)}
-                        className="text-[11px] font-mono text-[var(--rm-accent-bright)] hover:underline flex items-center gap-1 cursor-pointer"
-                        aria-expanded={isOutputOpen}
-                      >
-                        <Terminal className="w-3.5 h-3.5" />
-                        <span>
-                          {isOutputOpen ? 'HIDE RETRO CONSOLE EMULATION' : 'VIEW RETRO CONSOLE EMULATION'}
-                        </span>
-                        {isOutputOpen ? (
-                          <ChevronUp className="w-3 h-3" />
-                        ) : (
-                          <ChevronDown className="w-3 h-3" />
-                        )}
-                      </button>
-
-                      {isOutputOpen && (
-                        <div className="mt-2 p-3 bg-[var(--terminal-bg)] text-[var(--terminal-text)] font-mono text-xs border border-[var(--border-strong)] rounded-none shadow-inner overflow-x-auto leading-relaxed">
-                          <div className="text-[10px] text-gray-400 border-b border-gray-700 pb-1 mb-1.5 flex justify-between">
-                            <span>AT&amp;T PC6300 V2.2 // DOS 3.3 CONSOLE</span>
-                            <span>COM1: 9600 BAUD</span>
-                          </div>
-                          <pre className="whitespace-pre-wrap">{project.retroOutput}</pre>
-                          <span className="cga-cursor bg-[var(--terminal-text)]"></span>
-                        </div>
-                      )}
-                    </div>
-                  )}
                 </div>
 
                 {/* Card Footer Actions */}
                 <div className="p-4 border-t border-[var(--border-color)] bg-[var(--bg-secondary)] flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
-                  <div className="flex items-center gap-3">
+                  <div className="flex flex-wrap items-center gap-3">
                     {project.repoUrl && (
                       <a
                         href={project.repoUrl}
@@ -190,10 +137,10 @@ export const ProjectsSection: React.FC = () => {
                         rel="noopener noreferrer"
                         onClick={() => retroAudio.playKeyclick()}
                         className="retro-btn px-2.5 py-1 flex items-center gap-1.5 cursor-pointer font-bold"
-                        title={project.repoUrl === PERSONAL_INFO.githubUrl ? "View Thomas Kenny on GitHub" : "View project destination"}
+                        title={`Inspect ${project.title} on GitHub`}
                       >
                         <Github className="w-3.5 h-3.5" />
-                        <span>{project.repoUrl === PERSONAL_INFO.githubUrl ? "GITHUB PROFILE" : project.repoUrl === PERSONAL_INFO.huggingFaceUrl ? "HUGGING FACE" : "SRC REPO"}</span>
+                        <span>{project.sourceKind === 'contribution' ? 'PUBLIC PULL REQUEST' : 'PUBLIC REPOSITORY'}</span>
                       </a>
                     )}
                     {project.link && (
@@ -203,10 +150,10 @@ export const ProjectsSection: React.FC = () => {
                         rel="noopener noreferrer"
                         onClick={() => retroAudio.playKeyclick()}
                         className="retro-btn px-2.5 py-1 flex items-center gap-1.5 cursor-pointer"
-                        title="Open Documentation or Link"
+                        title="View the public site"
                       >
                         <ExternalLink className="w-3.5 h-3.5" />
-                        <span>SPEC / LIVE</span>
+                        <span>LIVE SITE</span>
                       </a>
                     )}
                   </div>

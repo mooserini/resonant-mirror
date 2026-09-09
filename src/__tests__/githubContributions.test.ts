@@ -1,48 +1,49 @@
-import { generateContributionData, PHOSPHOR_PALETTES } from '../utils/githubContributions';
+import { validateCalendar, summarizeContributions, PHOSPHOR_PALETTES } from '../utils/githubContributions';
 
-describe('GitHub Contributions & Monochrome Heatmap Service', () => {
-  test('should provide valid phosphor palettes for all 4 display modes', () => {
-    const modes = ['green', 'amber', 'white', 'cga'] as const;
-    modes.forEach((mode) => {
-      const palette = PHOSPHOR_PALETTES[mode];
-      expect(palette).toBeDefined();
-      expect(palette.colors).toHaveLength(5); // levels 0..4
-      expect(palette.bgRaster).toBeDefined();
-      expect(palette.accentGlow).toBeDefined();
-    });
-  });
+function calendar() {
+  return {
+    fetchedAt: '2026-09-09T01:15:00Z',
+    totalContributions: 8,
+    days: Array.from({ length: 367 }, (_, i) => ({
+      date: new Date(Date.UTC(2025, 8, 7 + i)).toISOString().slice(0, 10),
+      count: i >= 363 ? 2 : 0,
+      level: (i >= 363 ? 1 : 0) as 0 | 1,
+    })),
+  };
+}
 
-  test('should generate exactly 364 days (52 full weeks) of contributions', () => {
-    const { days, summary } = generateContributionData();
-    expect(days).toHaveLength(364);
-    expect(summary.totalContributions).toBeGreaterThan(0);
-    expect(summary.activeDaysCount).toBeGreaterThan(0);
-    expect(summary.longestStreak).toBeGreaterThanOrEqual(summary.currentStreak);
-  });
+test('retains GitHub counts and levels, includes partial weeks, and derives metrics', () => {
+  const { days, summary } = summarizeContributions(validateCalendar(calendar()));
+  expect(days).toHaveLength(367);
+  expect(days[366]).toEqual({ date: '2026-09-08', count: 2, level: 1, weekday: 2, weekIndex: 52 });
+  expect(summary).toEqual({ totalContributions: 8, activeDaysCount: 4, currentStreak: 4,
+    longestStreak: 4, busiestDay: { date: '2026-09-05', count: 2 } });
+});
 
-  test('should contain valid intensity levels 0 through 4', () => {
-    const { days } = generateContributionData();
-    const levels = new Set(days.map((d) => d.level));
-    expect(levels.has(0)).toBe(true);
-    expect(levels.has(1)).toBe(true);
-    expect(levels.has(2)).toBe(true);
-    expect(levels.has(3)).toBe(true);
-    expect(levels.has(4)).toBe(true);
-  });
+test('an inactive last day ends the displayed streak without inventing future days', () => {
+  const data = calendar(); data.days[366].count = 0; data.days[366].level = 0; data.totalContributions = 6;
+  const { summary } = summarizeContributions(validateCalendar(data));
+  expect(summary.currentStreak).toBe(0);
+  expect(summary.longestStreak).toBe(3);
+});
 
-  test('should associate active days with repository hints', () => {
-    const { days } = generateContributionData();
-    const activeDays = days.filter((d) => d.count > 0);
-    expect(activeDays.length).toBeGreaterThan(50);
-    activeDays.forEach((day) => {
-      expect(day.repoHint).toBeDefined();
-      expect(typeof day.repoHint).toBe('string');
-    });
-  });
+test('accepts a verified all-zero calendar', () => {
+  const data = calendar(); data.days.forEach(day => { day.count = 0; day.level = 0; }); data.totalContributions = 0;
+  expect(summarizeContributions(validateCalendar(data)).summary.totalContributions).toBe(0);
+});
 
-  test('should record busiest day metrics', () => {
-    const { summary } = generateContributionData();
-    expect(summary.busiestDay.count).toBeGreaterThan(10);
-    expect(summary.busiestDay.date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
-  });
+test.each(['missing', 'duplicate', 'negative', 'level', 'date', 'total', 'empty'])('rejects %s source data instead of displaying fabricated activity', fault => {
+  const data = calendar();
+  if (fault === 'missing') data.days.splice(100, 1);
+  if (fault === 'duplicate') data.days[100] = data.days[99];
+  if (fault === 'negative') data.days[100].count = -1;
+  if (fault === 'level') data.days[100].level = 1;
+  if (fault === 'date') data.days[100].date = '2025-02-30';
+  if (fault === 'total') data.totalContributions++;
+  if (fault === 'empty') data.days = [];
+  expect(() => validateCalendar(data)).toThrow();
+});
+
+test('preserves all four CRT palettes', () => {
+  Object.values(PHOSPHOR_PALETTES).forEach(palette => expect(palette.colors).toHaveLength(5));
 });

@@ -123,7 +123,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onOpenRefinement();
                 }}
                 className="px-2.5 py-1 text-xs border border-[var(--rm-status)] bg-[var(--rm-status)]/15 hover:bg-[var(--rm-status)] hover:text-black text-[var(--rm-status)] flex items-center gap-1.5 font-bold cursor-pointer transition-colors"
-                title="Enter operator session to stage refinements and generate AI Studio iteration prompts"
+                title="Sign in to propose a change and prepare a brief for your chosen assistant"
               >
                 <Wrench className="w-3.5 h-3.5" />
                 <span>REFINE</span>
@@ -142,17 +142,17 @@ export const Navbar: React.FC<NavbarProps> = ({
                   ? 'border-[#00aa00] bg-[#00aa00]/15 text-[#00aa00] font-bold'
                   : 'border-[var(--border-strong)] text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)]'
               }`}
-              title={fidoSession?.isAuthenticated ? 'FIDO2 Session Verified' : 'Authenticate with FIDO2 / WebAuthn Passkey'}
+              title={fidoSession?.isAuthenticated ? 'Passkey verified by the site' : 'Sign in with a passkey or Google'}
             >
               {fidoSession?.isAuthenticated ? (
                 <>
                   <ShieldCheck className="w-3.5 h-3.5 text-[#00aa00]" />
-                  <span>FIDO2: ACTIVE</span>
+                  <span>PASSKEY: VERIFIED</span>
                 </>
               ) : (
                 <>
                   <KeyRound className="w-3.5 h-3.5" />
-                  <span>FIDO2 AUTH</span>
+                  <span>SIGN IN</span>
                 </>
               )}
             </button>
@@ -374,7 +374,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className="w-full px-3 py-2 text-xs border border-[var(--border-strong)] flex items-center justify-center gap-2 text-[var(--text-primary)]"
               >
                 <KeyRound className="w-4 h-4" />
-                <span>{fidoSession?.isAuthenticated ? 'FIDO2: ACTIVE SESSION' : 'AUTHENTICATE FIDO2'}</span>
+                <span>{fidoSession?.isAuthenticated ? 'PASSKEY: VERIFIED' : 'SIGN IN'}</span>
               </button>
               <div className="flex w-full gap-2 justify-between">
                 <button

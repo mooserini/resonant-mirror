@@ -1,13 +1,18 @@
+import { serveRefinements } from './refinementAuth';
+import { serveContributions } from './githubContributions';
+
 // Keep the existing Red Door API and its published scripts on the same origin.
 const redDoorPaths = new Set([
-  '/mirror.css', '/mirror.js', '/door.js', '/pacing.js', '/auth.js',
+  '/mirror.css', '/mirror.js', '/door.js', '/pacing.js', '/auth.js', '/barkeep.js',
   '/assets/projects-core.v1.js', '/assets/projects.json',
   '/assets/fonts/Ac437_ATT_PC6300.ttf', '/assets/linktree-qr-400.png',
 ]);
 
 export default {
-  async fetch(request, env): Promise<Response> {
+  async fetch(request, env, ctx): Promise<Response> {
     const url = new URL(request.url);
+    if (url.pathname.startsWith('/portfolio-api/')) return serveRefinements(request, env, ctx);
+    if (url.pathname === '/github-contributions.json') return serveContributions(request, ctx);
     if (url.pathname === '/red-door/') {
       url.pathname = '/red-door';
       return Response.redirect(url.toString(), 307);

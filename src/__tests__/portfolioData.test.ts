@@ -23,15 +23,18 @@ describe('Portfolio Static Data & Integrity', () => {
     expect(GPG_ARMORED_PUBLIC_KEY).toContain('=mMJH');
   });
 
-  test('PROJECTS array contains Hermes Audit and MD to PDF generator', () => {
-    expect(PROJECTS.length).toBeGreaterThanOrEqual(4);
-    const hermes = PROJECTS.find((p) => p.id === 'hermes-audit');
-    expect(hermes).toBeDefined();
-    expect(hermes?.category).toBe('systems');
-
-    const mdPdf = PROJECTS.find((p) => p.id === 'md-pdf-generator');
-    expect(mdPdf).toBeDefined();
-    expect(mdPdf?.category).toBe('retro');
+  test('project sources point to specific repositories or contributions, not profile placeholders', () => {
+    expect(new Set(PROJECTS.map(p => p.id)).size).toBe(PROJECTS.length);
+    for (const project of PROJECTS) {
+      const source = new URL(project.repoUrl);
+      expect(source.protocol).toBe('https:');
+      expect(source.hostname).toBe('github.com');
+      if (project.sourceKind === 'repository') {
+        expect(source.pathname).toMatch(/^\/mooserini\/[^/]+$/);
+      } else {
+        expect(source.pathname).toMatch(/^\/[^/]+\/[^/]+\/(pull|commit)\/[^/]+$/);
+      }
+    }
   });
 
   test('SKILL_CATEGORIES covers 5 essential technical domains', () => {

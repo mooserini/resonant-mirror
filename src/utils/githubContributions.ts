@@ -52,139 +52,57 @@ export const PHOSPHOR_PALETTES: Record<HeatmapPhosphorMode, {
   },
 };
 
-const REPO_NAMES = [
-  'mooserini/hermes-house-kernel',
-  'mooserini/resmirror-cga-engine',
-  'mooserini/fido2-firmware-layer',
-  'mooserini/qwen-kv-cache-allocator',
-  'mooserini/hf-mooserini-models',
-  'mooserini/sendblue-imessage-bridge',
-  'mooserini/bitwarden-gpg-sync',
-];
+export interface PublicContributionCalendar {
+  days: Pick<ContributionDay, 'date' | 'count' | 'level'>[];
+  totalContributions: number;
+  fetchedAt: string;
+}
 
-/**
- * Deterministically generates ~52 weeks (364 days) of contribution history
- * with realistic commit spikes, streaks, and weekends.
- */
-export function generateContributionData(referenceDate = new Date('2026-09-07T12:00:00')): {
+/** Validate source data before displaying it; missing days are not zero activity. */
+export function validateCalendar(value: unknown): PublicContributionCalendar {
+  if (!value || typeof value !== 'object') throw new Error('Missing calendar');
+  const calendar = value as PublicContributionCalendar;
+  if (!Array.isArray(calendar.days) || calendar.days.length < 365 || calendar.days.length > 371 ||
+      !Number.isSafeInteger(calendar.totalContributions) || calendar.totalContributions < 0 ||
+      typeof calendar.fetchedAt !== 'string' || !Number.isFinite(Date.parse(calendar.fetchedAt))) {
+    throw new Error('Invalid calendar');
+  }
+  let previous = 0;
+  let total = 0;
+  for (const day of calendar.days) {
+    if (!day || typeof day.date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(day.date)) throw new Error('Invalid day');
+    const time = Date.parse(day.date + 'T00:00:00Z');
+    if (!Number.isFinite(time) || new Date(time).toISOString().slice(0, 10) !== day.date ||
+        (previous && time - previous !== 86400000) ||
+        !Number.isSafeInteger(day.count) || day.count < 0 ||
+        !Number.isInteger(day.level) || day.level < 0 || day.level > 4 ||
+        (day.count === 0) !== (day.level === 0)) throw new Error('Invalid contribution day');
+    previous = time;
+    total += day.count;
+  }
+  if (total !== calendar.totalContributions) throw new Error('Calendar total mismatch');
+  return calendar;
+}
+
+/** Preserve GitHub's dates and intensity tiers; derive metrics only from those days. */
+export function summarizeContributions(calendar: PublicContributionCalendar): {
   days: ContributionDay[];
   summary: ContributionSummary;
 } {
-  const days: ContributionDay[] = [];
-  const totalWeeks = 52;
-  const totalDays = totalWeeks * 7; // 364 days
-
-  // Compute start date so referenceDate is at the end of the 52-week grid
-  const refDayOfWeek = referenceDate.getDay(); // 0 = Sun, 6 = Sat
-  const endDate = new Date(referenceDate);
-  endDate.setHours(0, 0, 0, 0);
-
-  // We align to full weeks: ending on the current week's Saturday
-  const daysToEndOfWeek = 6 - refDayOfWeek;
-  const gridEnd = new Date(endDate);
-  gridEnd.setDate(endDate.getDate() + daysToEndOfWeek);
-
-  const gridStart = new Date(gridEnd);
-  gridStart.setDate(gridEnd.getDate() - (totalDays - 1));
-
-  let totalCommits = 0;
-  let activeDaysCount = 0;
-  let currentStreak = 0;
+  const first = new Date(calendar.days[0].date + 'T00:00:00Z');
+  const start = first.getTime() - first.getUTCDay() * 86400000;
+  let streak = 0;
   let longestStreak = 0;
-  let tempStreak = 0;
-  let busiest = { date: '', count: 0 };
-
-  // Pseudo-random deterministic generator based on seed
-  let seed = 90251984;
-  const pseudoRandom = () => {
-    seed = (seed * 9301 + 49297) % 233280;
-    return seed / 233280;
-  };
-
-  const cur = new Date(gridStart);
-  for (let i = 0; i < totalDays; i++) {
-    const dayOfWeek = cur.getDay();
-    const weekIndex = Math.floor(i / 7);
-    const dateStr = cur.toISOString().split('T')[0];
-
-    // Determine probability and count based on day of week and periodic waves
-    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-    const wave = Math.sin(i / 14) * 0.3 + Math.cos(i / 29) * 0.2; // Seasonal activity surges
-    const rand = pseudoRandom();
-
-    let count = 0;
-    const activityThreshold = isWeekend ? 0.45 : 0.22;
-
-    if (rand + wave > activityThreshold) {
-      if (rand > 0.94) {
-        count = Math.floor(pseudoRandom() * 12) + 12; // Peak sprint: 12-24 commits
-      } else if (rand > 0.78) {
-        count = Math.floor(pseudoRandom() * 6) + 6; // High day: 6-11 commits
-      } else if (rand > 0.45) {
-        count = Math.floor(pseudoRandom() * 4) + 2; // Medium day: 2-5 commits
-      } else {
-        count = 1; // Light day: 1 commit
-      }
-    }
-
-    // Do not show future commits if cur > referenceDate
-    if (cur > referenceDate) {
-      count = 0;
-    }
-
-    // Map count to level 0..4
-    let level: 0 | 1 | 2 | 3 | 4 = 0;
-    if (count >= 12) level = 4;
-    else if (count >= 7) level = 3;
-    else if (count >= 3) level = 2;
-    else if (count >= 1) level = 1;
-
-    const repoHint = count > 0 ? REPO_NAMES[Math.floor(pseudoRandom() * REPO_NAMES.length)] : undefined;
-
-    days.push({
-      date: dateStr,
-      count,
-      level,
-      weekday: dayOfWeek,
-      weekIndex,
-      repoHint,
-    });
-
-    if (count > 0) {
-      totalCommits += count;
-      activeDaysCount++;
-      tempStreak++;
-      if (tempStreak > longestStreak) {
-        longestStreak = tempStreak;
-      }
-      if (count > busiest.count) {
-        busiest = { date: dateStr, count };
-      }
-    } else {
-      tempStreak = 0;
-    }
-
-    cur.setDate(cur.getDate() + 1);
-  }
-
-  // Calculate current streak from the end backwards
-  for (let i = days.length - 1; i >= 0; i--) {
-    if (new Date(days[i].date) > referenceDate) continue;
-    if (days[i].count > 0) {
-      currentStreak++;
-    } else {
-      break;
-    }
-  }
-
-  return {
-    days,
-    summary: {
-      totalContributions: totalCommits,
-      currentStreak,
-      longestStreak,
-      busiestDay: busiest,
-      activeDaysCount,
-    },
-  };
+  let activeDaysCount = 0;
+  let busiestDay = { date: '', count: 0 };
+  const days = calendar.days.map(day => {
+    const date = new Date(day.date + 'T00:00:00Z');
+    streak = day.count > 0 ? streak + 1 : 0;
+    longestStreak = Math.max(longestStreak, streak);
+    if (day.count > 0) activeDaysCount++;
+    if (day.count > busiestDay.count) busiestDay = { date: day.date, count: day.count };
+    return { ...day, weekday: date.getUTCDay(), weekIndex: Math.floor((date.getTime() - start) / (7 * 86400000)) };
+  });
+  return { days, summary: { totalContributions: calendar.totalContributions, currentStreak: streak,
+    longestStreak, activeDaysCount, busiestDay } };
 }
