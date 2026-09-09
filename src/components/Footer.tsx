@@ -44,7 +44,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenGpg, onOpenRefinement }) =
               &copy; {new Date().getFullYear()} {PERSONAL_INFO.name} ({PERSONAL_INFO.brandName}). All rights reserved.
             </div>
             <div className="text-[10px]">
-              TYPOGRAPHY: <a href="https://int10h.org/oldschool-pc-fonts/fontlist/font?att_pc6300" target="_blank" rel="noopener noreferrer" className="hover:underline text-[var(--text-secondary)]">Web AT&amp;T PC6300</a> by VileR (int10h.org) • CC BY-SA 4.0
+              TYPOGRAPHY: <a href="https://int10h.org/oldschool-pc-fonts/fontlist/font?att_pc6300" target="_blank" rel="noopener noreferrer" className="hover:underline text-[var(--text-secondary)]">Web AT&amp;T PC6300</a> by <a href="https://github.com/viler-int10h" target="_blank" rel="noopener noreferrer" className="hover:underline text-[var(--text-secondary)]">VileR</a> (int10h.org) • CC BY-SA 4.0
             </div>
           </div>
 

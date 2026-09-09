@@ -3,8 +3,9 @@
 The portfolio at https://www.getadongle.com is built from the AI Studio export
 at upstream commit `7644c510083ff05a5856643eb51213506bc2ba92`.
 The PC6300 font, visual design, project descriptions, and interactive consoles
-are retained. Public contact is `tom@getadongle.com`; Google Chat uses the
-Google account of the person signing in.
+are retained. Public contact is `tom@getadongle.com`. The former browser-side
+Google Chat client has been removed from current source in favor of the
+server-side Resonant Relay described in `RESONANT-RELAY.md`.
 
 ## Identity and contact
 
@@ -29,10 +30,11 @@ Existing `/api/` requests and known Red Door assets delegate through the
 origin. The Red Door Worker, D1 database, and R2 bucket are not modified.
 
 Firebase project `gen-lang-client-0304120170` retains its existing Google OAuth
-configuration and Chat scopes. `www.getadongle.com` was added to Authentication
-Settings > Authorized domains with the owner's approval. Google Chat tokens
-remain associated with the signed-in visitor. Firebase web configuration is
-public client configuration; private provider credentials must not be bundled.
+configuration for site sign-in. `www.getadongle.com` was added to Authentication
+Settings > Authorized domains with the owner's approval. The current browser
+code requests basic Google sign-in only; it does not request Google Chat scopes.
+Firebase web configuration is public client configuration; private provider
+credentials must not be bundled.
 
 ## Build and deploy
 
@@ -44,6 +46,33 @@ npm run check:worker
 npm run deploy:check
 npx wrangler deploy
 ```
+
+Migration `0002_resonant_relay.sql` was applied to the remote
+`portfolio-refinements` database on 2026-09-09. The `DISCORD_BOT_TOKEN` Worker
+secret was created through the interactive
+`wrangler versions secret put` flow, which produced an unpublished version; the
+live deployment remained unchanged. The secret receipt is version
+`903325d9-fcf0-44d2-93e2-4820d45be503`; deployment status remained 100% on
+`1a024f66-3c5b-4342-b52a-7dbad9c5eb0d`. Wrangler `4.129.0` performed the
+operation and reported `4.130.0` available; the update was not installed before
+or during this receipt. Afterward, the project was upgraded to Wrangler
+`4.130.0` with its matching Miniflare `5.20260908.0-alpha`; 86 app tests, 22
+Worker tests, both TypeScript checks, the production build, and Wrangler's dry
+run passed on 2026-09-09. The owner's public Discord user ID is already pinned
+in `wrangler.jsonc`. Do not place the token in
+`wrangler.jsonc`, `.env`, source, a command argument, or chat. This
+checkout has not deployed the relay merely because the code or documentation is
+present.
+
+The clean relay smoke-test version is
+`b29cf7a5-bedd-4cb2-a066-f70e0ce042c8`. It was attached to the deployment at
+0% while `1a024f66-3c5b-4342-b52a-7dbad9c5eb0d` remained at 100%. A version-
+override request on 2026-09-09 returned HTTP 201 and created one private Discord
+forum post. D1 recorded one delivered dispatch; replaying the same request
+returned `duplicate: true` without another Discord post, and an anonymous read
+returned HTTP 401. Discord's UI visibly confirmed the expected handle prefix
+and message. This smoke-test split does not send ordinary visitor traffic to the
+relay version.
 
 Local preview: `npx wrangler dev --local --port 8790`, then open
 `http://127.0.0.1:8790/`. The Red Door service binding needs a running matching

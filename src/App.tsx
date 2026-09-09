@@ -12,7 +12,7 @@ import { BlogModal } from './components/BlogModal';
 import { DosTerminal } from './components/DosTerminal';
 import { RefinementModal } from './components/RefinementModal';
 import { OfflineFallback } from './components/OfflineFallback';
-import { GoogleChatModal } from './components/GoogleChatModal';
+import { ResonantRelayModal } from './components/ResonantRelayModal';
 import { Wrench, WifiOff } from 'lucide-react';
 import { FidoSession } from './types';
 import { getCurrentFidoSession, refreshFidoSession } from './utils/fidoAuth';
@@ -41,7 +41,7 @@ export default function App() {
     return false;
   });
   const [isManualOfflineTest, setIsManualOfflineTest] = useState<boolean>(false);
-  const [isChatModalOpen, setIsChatModalOpen] = useState<boolean>(false);
+  const [isRelayModalOpen, setIsRelayModalOpen] = useState<boolean>(false);
 
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     if (typeof window !== 'undefined') {
@@ -134,20 +134,20 @@ export default function App() {
       setShowOfflineFallback(true);
     };
 
-    const handleOpenChatEvent = () => {
-      setIsChatModalOpen(true);
+    const handleOpenRelayEvent = () => {
+      setIsRelayModalOpen(true);
     };
 
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
     window.addEventListener('open-modem-diagnostics', handleOpenModemEvent);
-    window.addEventListener('open-google-chat', handleOpenChatEvent);
+    window.addEventListener('open-resonant-relay', handleOpenRelayEvent);
 
     return () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
       window.removeEventListener('open-modem-diagnostics', handleOpenModemEvent);
-      window.removeEventListener('open-google-chat', handleOpenChatEvent);
+      window.removeEventListener('open-resonant-relay', handleOpenRelayEvent);
     };
   }, []);
 
@@ -207,7 +207,7 @@ export default function App() {
             onOpenTerminal={() => setIsTerminalOpen(true)}
             onOpenRefinement={() => setIsRefinementModalOpen(true)}
             onOpenModemDiagnostics={handleOpenModemDiagnostics}
-            onOpenChat={() => setIsChatModalOpen(true)}
+            onOpenChat={() => setIsRelayModalOpen(true)}
             isOffline={isOffline}
             fidoSession={fidoSession}
           />
@@ -308,10 +308,10 @@ export default function App() {
             onClose={() => setIsBlogModalOpen(false)}
           />
 
-          {/* Google Chat Subsystem Modal */}
-          <GoogleChatModal
-            isOpen={isChatModalOpen}
-            onClose={() => setIsChatModalOpen(false)}
+          {/* Private Discord-backed relay */}
+          <ResonantRelayModal
+            isOpen={isRelayModalOpen}
+            onClose={() => setIsRelayModalOpen(false)}
             onOpenTerminal={() => setIsTerminalOpen(true)}
           />
 

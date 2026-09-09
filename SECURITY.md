@@ -1,6 +1,6 @@
 # Security Policy
 
-The Resonant Mirror is a public portfolio with a Cloudflare Worker, server-verified sign-in, a D1-backed refinement workspace, and delegated routes to the separate Red Door application. This policy explains what is supported, what should be reported privately, and which visible behaviors are intentional.
+The Resonant Mirror is a public portfolio with a Cloudflare Worker, server-verified sign-in, D1-backed refinement and relay workspaces, and delegated routes to the separate Red Door application. This policy explains what is supported, what should be reported privately, and which visible behaviors are intentional.
 
 ## Supported surfaces
 
@@ -20,6 +20,7 @@ Please report vulnerabilities that could materially affect the confidentiality, 
 - Forged owner identity, cross-account suggestion access, passkey replay, session fixation, or session theft.
 - Cross-origin request failures, injection, or cross-site scripting with a practical security impact.
 - Exposure of secrets, authentication material, private suggestion content, or sensitive server logs.
+- Exposure of the Discord bot token, cross-handle relay messages, forged relay attribution, or a route that lets anonymous senders read replies.
 - Worker routing or service-binding errors that cross the portfolio and Red Door boundaries or expose protected data.
 - Dependency vulnerabilities that are demonstrably reachable through this application.
 - A way for a refinement or exported brief to publish a site change or contact an AI provider without an explicit separate action.
@@ -34,6 +35,7 @@ The following are not vulnerabilities by themselves:
 - The contact form prepares a local `mailto:` draft. It does not send, queue, archive, or encrypt email on the server.
 - The optional armored-envelope display is a plaintext simulation, not cryptographic encryption.
 - Visitors may create accounts and submit suggestions, but cannot assign themselves the owner role or publish changes.
+- Anonymous relay users may send a rate-limited dispatch but cannot read replies. Authenticated relay users disclose only their chosen site handle and message to the private Discord forum.
 - Copying or downloading a refinement brief does not send it to an assistant.
 - Portfolio authentication and Red Door authentication are separate.
 - Red Door intentionally has no email recovery, password reset, recovery key, or operator-reset path. A bypass, credential disclosure, or cross-account data exposure remains reportable.

@@ -187,7 +187,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               </button>
             )}
 
-            {/* Google Chat Client Interface Button */}
+            {/* Private Discord-backed relay */}
             {onOpenChat && (
               <button
                 id="nav-chat-btn"
@@ -195,9 +195,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                   retroAudio.playKeyclick();
                   onOpenChat();
                 }}
-                className="px-2 py-1 text-xs border border-[var(--rm-headings)] bg-[var(--rm-headings)]/15 hover:bg-[var(--rm-headings)]/25 text-[var(--rm-headings)] flex items-center gap-1.5 font-bold cursor-pointer transition-colors"
-                title="Open Google Chat Subsystem (Spaces & Dispatches)"
-                aria-label="Open Google Chat"
+                className="px-2 py-1 text-xs border border-[var(--rm-identity-accent)] bg-[var(--rm-identity-accent)]/15 hover:bg-[var(--rm-identity-accent)]/25 text-[var(--rm-identity-accent)] flex items-center gap-1.5 font-bold cursor-pointer transition-colors"
+                title="Open Resonant Relay"
+                aria-label="Open Resonant Relay"
               >
                 <MessageSquare className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">CHAT</span>
@@ -350,10 +350,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                     onOpenChat();
                     setMobileMenuOpen(false);
                   }}
-                  className="w-full px-3 py-2 text-xs border border-[var(--rm-headings)] bg-[var(--rm-headings)]/20 flex items-center justify-center gap-2 text-[var(--rm-headings)] font-bold cursor-pointer"
+                  className="w-full px-3 py-2 text-xs border border-[var(--rm-identity-accent)] bg-[var(--rm-identity-accent)]/20 flex items-center justify-center gap-2 text-[var(--rm-identity-accent)] font-bold cursor-pointer"
                 >
-                  <MessageSquare className="w-4 h-4 text-[var(--rm-headings)]" />
-                  <span>GOOGLE CHAT SUBSYSTEM</span>
+                  <MessageSquare className="w-4 h-4 text-[var(--rm-identity-accent)]" />
+                  <span>RESONANT RELAY</span>
                 </button>
               )}
               <button

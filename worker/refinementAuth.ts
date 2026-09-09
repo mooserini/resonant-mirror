@@ -6,7 +6,7 @@ const SESSION = '__Host-rm_session';
 const CEREMONY = '__Host-rm_ceremony';
 const sessionLifetime = 12 * 60 * 60;
 type Account = { id: string; display_name: string; google_uid: string | null; email: string | null; role: 'owner' | 'visitor' };
-type VerifiedSession = Account & { token_hash: string; method: 'passkey' | 'google'; credential_id: string | null; authenticated_at: number; expires_at: number };
+export type VerifiedSession = Account & { token_hash: string; method: 'passkey' | 'google'; credential_id: string | null; authenticated_at: number; expires_at: number };
 type Ceremony = { kind: string; challenge: string; account_id: string | null; display_name: string | null; session_hash: string | null };
 class HttpError extends Error { constructor(public status: number, message: string) { super(message); } }
 const now = () => Math.floor(Date.now() / 1000);
@@ -31,7 +31,7 @@ async function readBody(request: Request): Promise<Record<string, unknown>> {
   catch { throw new HttpError(400, 'Invalid JSON.'); }
 }
 function textField(value: unknown, max: number, label: string) { if (typeof value !== 'string' || !value.trim() || value.length > max) throw new HttpError(400, `${label} is required (up to ${max} characters).`); return value.trim(); }
-async function currentSession(request: Request, env: Env): Promise<VerifiedSession | null> {
+export async function currentSession(request: Request, env: Env): Promise<VerifiedSession | null> {
   const token = cookie(request, SESSION); if (!/^[a-f0-9]{64}$/.test(token)) return null;
   return env.REFINEMENTS_DB.prepare('SELECT a.*, s.token_hash, s.method, s.credential_id, s.authenticated_at, s.expires_at FROM sessions s JOIN accounts a ON a.id=s.account_id WHERE s.token_hash=? AND s.expires_at>?').bind(await hash(token), now()).first<VerifiedSession>();
 }
@@ -109,8 +109,10 @@ export async function serveRefinements(request: Request, env: Env, ctx: Executio
         const owner = await env.REFINEMENTS_DB.prepare("SELECT id FROM accounts WHERE role='owner'").first();
         const isOwner = !owner && !!env.OWNER_GOOGLE_EMAIL && payload.email.toLowerCase() === env.OWNER_GOOGLE_EMAIL.toLowerCase();
         const id = crypto.randomUUID();
-        const name = isOwner ? 'Thomas Kenny' : (typeof payload.name === 'string' ? payload.name.slice(0, 80) : 'Google visitor');
-        await env.REFINEMENTS_DB.prepare('INSERT INTO accounts VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT(google_uid) DO NOTHING').bind(id, name, payload.sub, payload.email, isOwner ? 'owner' : 'visitor', now()).run();
+        const name = isOwner ? 'Thomas Kenny' : 'Visitor';
+        // A visitor's Google subject binds the account. Their provider name and
+        // email are deliberately not retained or exposed by the portfolio.
+        await env.REFINEMENTS_DB.prepare('INSERT INTO accounts VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT(google_uid) DO NOTHING').bind(id, name, payload.sub, isOwner ? payload.email : null, isOwner ? 'owner' : 'visitor', now()).run();
         account = await env.REFINEMENTS_DB.prepare('SELECT * FROM accounts WHERE google_uid=?').bind(payload.sub).first<Account>();
       }
       return issueSession(request, env, account!.id, 'google', null);

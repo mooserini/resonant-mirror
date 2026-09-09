@@ -21,11 +21,11 @@ export const SignInControls: React.FC<{ session: RefinementSession | null; onCha
       <div className="flex flex-wrap gap-2">
         <button className={button} disabled={busy} onClick={() => run(() => authenticateVerifiedPasskey())}>USE A PASSKEY</button>
         <button className={button} disabled={busy} onClick={() => run(() => registerVerifiedPasskey(session.displayName))}>ADD PASSKEY TO THIS ACCOUNT</button>
-        <button className={button} disabled={busy} onClick={() => run(async () => { await endVerifiedSession(); return null; })}>SIGN OUT OF REFINEMENTS</button>
+        <button className={button} disabled={busy} onClick={() => run(async () => { await endVerifiedSession(); return null; })}>SIGN OUT</button>
       </div>
     </> : <>
-      <p className="text-sm text-[var(--text-primary)] font-bold">SIGN IN TO PROPOSE A CHANGE</p>
-      <p className="text-xs text-[var(--text-secondary)] leading-relaxed">Use a passkey or Google account. Suggestions are attributed to your verified account and saved for review. They do not publish changes to the site.</p>
+      <p className="text-sm text-[var(--text-primary)] font-bold">SIGN IN TO THE SITE</p>
+      <p className="text-xs text-[var(--text-secondary)] leading-relaxed">Use a passkey or Google account. The verified session can receive relay replies and submit attributed refinements; it does not publish site changes.</p>
       <div className="flex flex-wrap gap-2">
         <button className={button} disabled={busy} onClick={() => run(() => authenticateVerifiedPasskey())}>SIGN IN WITH PASSKEY</button>
         <button className={button} disabled={busy} onClick={() => run(() => signInWithGoogle())}>SIGN IN WITH GOOGLE</button>

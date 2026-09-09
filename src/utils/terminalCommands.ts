@@ -47,7 +47,7 @@ export function executeTerminalCommand(
   ACHIEVEMENTS     - View unlocked retro Easter Egg badges & score (BADGES)
   HF / HUGGINGFACE - Hugging Face open-weight models & datasets (@mooserini)
   HEATMAP / COMMITS- Inspects D3 1980s monochrome GitHub contribution matrix
-  CHAT / GOOGLECHAT- Opens Google Chat retro subsystem (Spaces & Dispatches)
+  CHAT / RELAY     - Opens the private Discord-backed Resonant Relay
   MODEM / OFFLINE  - Opens retro Hayes modem diagnostic code generator & test
   REFINE           - Enters operator refinement session to iterate on app
   GPG              - Prints GPG cryptographic public key & fingerprint
@@ -379,26 +379,28 @@ Press [ESC] at any time to return to local cache.`,
     }
 
     case 'chat':
+    case 'relay':
+    case 'discord':
     case 'googlechat':
     case 'spaces':
     case 'messages': {
       if (typeof window !== 'undefined') {
-        window.dispatchEvent(new CustomEvent('open-google-chat'));
+        window.dispatchEvent(new CustomEvent('open-resonant-relay'));
       }
       return [
         {
           id: Math.random().toString(),
           type: 'output',
           text: `======================================================================
-GOOGLE CHAT SUBSYSTEM // COMM PROTOCOL V1.0
+RESONANT RELAY // PRIVATE DISCORD COURIER V1.0
 ======================================================================
-  API HOST        : chat.googleapis.com (v1)
-  SECURITY        : TLS 1.3 / OAuth2 Bearer Tokens (In-Memory Only)
-  SCOPES ACTIVE   : chat.spaces, chat.messages, chat.memberships
-  MUTATING OPS    : Explicit User Confirmation Enforced
+  TRANSPORT       : SAME-ORIGIN WORKER → DISCORD REST API
+  ANONYMOUS MODE  : SEND-ONLY / RATE LIMITED
+  VERIFIED MODE   : HANDLE-BOUND PRIVATE FORUM THREAD
+  CREDENTIALS     : SERVER-SIDE SECRET / NEVER SENT TO BROWSER
 ======================================================================
-INITIALIZING GOOGLE CHAT INTERFACE WINDOW...
-Review spaces and dispatch messages directly from the retro window.`,
+INITIALIZING RESONANT RELAY WINDOW...
+Transmit anonymously or sign in to receive replies under your chosen handle.`,
         },
       ];
     }

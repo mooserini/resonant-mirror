@@ -124,6 +124,9 @@ test('Google issuer signatures are verified, owner is bound to Google UID, enrol
   await c.request('/auth/logout',{}); const options=await c.request('/auth/login/options',{}); const login=await c.request('/auth/login/verify',{credential:key.login(options.data.options)});
   assert.equal(login.data.session.role,'owner');
   const visitor=browser(mf); const v=await visitor.request('/auth/google',{idToken:await googleToken('other@example.test','visitor-uid')}); assert.equal(v.data.session.role,'visitor');
+  assert.equal(v.data.session.displayName,'Visitor');
+  const visitorAccount=await db.prepare('SELECT display_name, email, google_uid FROM accounts WHERE id=?').bind(v.data.session.userId).first();
+  assert.deepEqual(visitorAccount,{display_name:'Visitor',email:null,google_uid:'visitor-uid'});
   await visitor.request('/refinements',suggestion);
   assert.equal((await c.request('/refinements')).data.items.length,1);
   const takeover=browser(mf); const changed=await takeover.request('/auth/google',{idToken:await googleToken('owner@example.test','different-uid')}); assert.equal(changed.data.session.role,'visitor');

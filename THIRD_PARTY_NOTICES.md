@@ -4,7 +4,7 @@ The MIT License in [LICENSE](LICENSE) applies to Thomas Kenny's original source 
 
 ## Web AT&T PC6300 font
 
-- Author: VileR.
+- Author: [VileR](https://github.com/viler-int10h) (`@viler-int10h` on GitHub).
 - Source: [The Ultimate Oldschool PC Font Pack](https://int10h.org/oldschool-pc-fonts/fontlist/font?att_pc6300).
 - Upstream documentation: [Oldschool PC Font Pack readme and legal terms](https://int10h.org/oldschool-pc-fonts/readme/).
 - License: [Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/).

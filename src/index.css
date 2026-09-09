@@ -15,6 +15,7 @@
   --rm-chrome-top: #F7EEE2;      /* Warm Paper Chrome Top */
   --rm-chrome-bot: #A98B70;      /* Vintage Copper Chrome Bottom */
   --rm-headings: #4A342A;        /* Deep Copper Heading */
+  --rm-identity-accent: #4A342A; /* Alias / brand line on paper */
   --rm-heading-text: #EDE3D5;    /* Ivory Heading Text */
 
   /* Light Mode (Resonant Ivory / Paper / Hermes Archive) */
@@ -44,6 +45,7 @@
   --text-primary: #EDE3D5;
   --text-secondary: #D4C9BA;
   --text-muted: #8F877B;
+  --rm-identity-accent: #D6A27C; /* 7.89:1 against dark section chrome */
   --border-color: #36322C;
   --border-strong: #A98B70;
   --border-highlight: #4A342A;

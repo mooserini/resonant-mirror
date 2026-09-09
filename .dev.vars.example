@@ -1,2 +1,3 @@
-# Bootstrap owner email; used only after a verified Google sign-in.
-OWNER_GOOGLE_EMAIL=owner@example.com
+# Local-only examples. Never commit real values in .dev.vars.
+OWNER_GOOGLE_EMAIL=owner@example.test
+DISCORD_BOT_TOKEN=replace-with-local-development-token

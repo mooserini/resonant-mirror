@@ -3,7 +3,7 @@
   "name": "resonant-mirror-portfolio",
   "account_id": "815bcdaf788850798df37ed8f3afb8d0",
   "main": "worker/index.ts",
-  "compatibility_date": "2026-09-07",
+  "compatibility_date": "2026-09-09",
   "compatibility_flags": [
     "nodejs_compat"
   ],
@@ -43,6 +43,10 @@
   "vars": {
     "AUTH_ORIGIN": "https://www.getadongle.com",
     "AUTH_RP_ID": "www.getadongle.com",
-    "FIREBASE_PROJECT_ID": "gen-lang-client-0304120170"
+    "FIREBASE_PROJECT_ID": "gen-lang-client-0304120170",
+    "DISCORD_APPLICATION_ID": "1545510996574216362",
+    "DISCORD_GUILD_ID": "358496815521333248",
+    "DISCORD_FORUM_CHANNEL_ID": "1547202057637994627",
+    "DISCORD_OWNER_USER_ID": "358494366274158592"
   }
 }

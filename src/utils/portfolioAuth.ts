@@ -13,8 +13,8 @@ export async function getVerifiedSession(): Promise<RefinementSession | null> {
 export function announceAuthChange() { window.dispatchEvent(new Event('portfolio-auth-changed')); }
 export async function endVerifiedSession() { await portfolioRequest('/auth/logout', {}); announceAuthChange(); }
 export async function signInWithGoogle(): Promise<RefinementSession> {
-  // Separate Firebase app and in-memory persistence: refinement login does not
-  // request Google Chat scopes or replace the existing Chat app's session.
+  // Separate Firebase app and in-memory persistence: site login requests no
+  // Discord scopes and never exposes the relay bot credential to the browser.
   const [{ getApps, initializeApp }, { getAuth, setPersistence, inMemoryPersistence, GoogleAuthProvider, signInWithPopup, signOut }, { default: config }] = await Promise.all([import('firebase/app'), import('firebase/auth'), import('../../firebase-applet-config.json')]);
   const app = getApps().find(a => a.name === 'portfolio-refinements') || initializeApp(config, 'portfolio-refinements');
   const auth = getAuth(app);

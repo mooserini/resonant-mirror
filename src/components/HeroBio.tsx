@@ -56,7 +56,7 @@ export const HeroBio: React.FC<HeroBioProps> = ({ theme, onOpenGpg, onOpenRefine
                 {PERSONAL_INFO.name}
               </h1>
 
-              <div className="text-sm sm:text-base text-[var(--rm-headings)] font-semibold tracking-wide">
+              <div className="text-sm sm:text-base text-[var(--rm-identity-accent)] font-semibold tracking-wide">
                 <span>ALIASES: {PERSONAL_INFO.alias}</span>
                 <span className="mx-2">•</span>
                 <span>BRAND: {PERSONAL_INFO.brandName}</span>

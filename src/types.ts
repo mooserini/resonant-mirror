@@ -104,6 +104,19 @@ export interface RefinementItem {
   contentHash: string;
 }
 
+export interface RelayProfile {
+  handle: string;
+  hasConversation: boolean;
+  acceptedAt: string;
+}
+
+export interface RelayMessage {
+  id: string;
+  author: 'you' | 'tom';
+  text: string;
+  createdAt: string;
+}
+
 export type HeatmapPhosphorMode = 'green' | 'amber' | 'white' | 'cga';
 
 export interface ContributionDay {
@@ -121,4 +134,3 @@ export interface ContributionSummary {
   busiestDay: { date: string; count: number };
   activeDaysCount: number;
 }
-

@@ -1,5 +1,6 @@
 import { serveRefinements } from './refinementAuth';
 import { serveContributions } from './githubContributions';
+import { serveRelay } from './discordRelay';
 
 // Keep the existing Red Door API and its published scripts on the same origin.
 const redDoorPaths = new Set([
@@ -11,6 +12,7 @@ const redDoorPaths = new Set([
 export default {
   async fetch(request, env, ctx): Promise<Response> {
     const url = new URL(request.url);
+    if (url.pathname.startsWith('/portfolio-api/relay/')) return serveRelay(request, env);
     if (url.pathname.startsWith('/portfolio-api/')) return serveRefinements(request, env, ctx);
     if (url.pathname === '/github-contributions.json') return serveContributions(request, ctx);
     if (url.pathname === '/red-door/') {
