@@ -45,6 +45,8 @@ Portfolio authentication is separate from Red Door authentication. It does not g
 
 The relay reuses this verified site session. Google or passkey credentials are not sent to Discord, and a provider account name is not used as the public relay name. A visitor explicitly chooses a handle before two-way chat is enabled. See [RESONANT-RELAY.md](RESONANT-RELAY.md) for the privacy boundary, Discord permissions, and operational setup.
 
+The visitor-facing [Privacy Policy](public/privacy.html) and [Terms of Use](public/terms.html) describe the portfolio sign-in, refinement, and relay data paths in plain language. The Worker serves them at `/privacy` and `/terms`.
+
 ## Production shape
 
 The Cloudflare Worker `resonant-mirror-portfolio` serves the Vite build on `www.getadongle.com`.

@@ -34,6 +34,26 @@ test('portfolio homepage is served by assets instead of the legacy site', async 
   assert.match(await response.text(), /The Resonant Mirror/);
 });
 
+test('clean legal URLs resolve to the portfolio policy documents', async () => {
+  const expected = new Map([
+    ['/privacy', '/privacy.html'],
+    ['/privacy/', '/privacy.html'],
+    ['/terms', '/terms.html'],
+    ['/terms/', '/terms.html'],
+  ]);
+  for (const [requested, assetPath] of expected) {
+    const response = await worker.fetch(new Request(`https://www.getadongle.com${requested}`), {
+      ASSETS: { fetch: async (request) => {
+        assert.equal(new URL(request.url).pathname, assetPath);
+        return new Response('<h1>Public policy</h1>');
+      } },
+      RED_DOOR: { fetch() { throw new Error('Legal pages must not reach Red Door'); } },
+    });
+    assert.equal(response.status, 200);
+    assert.match(await response.text(), /Public policy/);
+  }
+});
+
 test('legacy game scripts remain owned by Red Door', async () => {
   for (const path of ['/door.js', '/barkeep.js']) {
     const response = await worker.fetch(new Request(`https://www.getadongle.com${path}`), {

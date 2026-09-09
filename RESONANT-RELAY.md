@@ -2,10 +2,26 @@
 
 The Resonant Relay is a narrow bridge from the portfolio to one private Discord forum channel. It uses Discord as Thomas Kenny's operator dashboard; visitors never install the Discord app, join the server, receive its token, or receive Discord account access.
 
-This document describes the current source. The D1 migration, public identifiers,
-secret, automated validation, and isolated Discord smoke test are complete. The
-relay version remains attached at 0% traffic and is not live for ordinary
-visitors until an explicit production promotion.
+This document describes the current source and the production relay verified on
+September 9, 2026. The D1 migration, public identifiers, secret, automated
+validation, isolated Discord smoke test, production promotion, and hosted
+two-way conversation check are complete. This is a dated receipt rather than a
+guarantee that external service state has remained unchanged.
+
+## Discord application presentation
+
+The Developer Portal description is:
+
+> Private message relay for The Resonant Mirror. Visitors can send Thomas a
+> message through the website; verified visitors can receive replies under a
+> site-only handle they choose. Provider names and email addresses are not used
+> as chat identities. Messages are carried through a private Discord forum.
+
+The Worker serves the public privacy and terms pages at `/privacy` and `/terms`.
+Their canonical production addresses are `https://www.getadongle.com/privacy`
+and `https://www.getadongle.com/terms`; verify those addresses after each
+deployment before relying on them in the Developer Portal. Discord Application
+Test Mode is an independent operator-controlled setting.
 
 ## Visitor behavior
 

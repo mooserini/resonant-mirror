@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Privacy Policy for The Resonant Mirror portfolio and Resonant Relay." />
+    <link rel="canonical" href="https://www.getadongle.com/privacy" />
+    <link rel="stylesheet" href="/legal.css" />
+    <title>Privacy Policy — The Resonant Mirror</title>
+    <script>
+      try {
+        const saved = localStorage.getItem('rm_theme');
+        document.documentElement.dataset.theme = saved === 'dark' || saved === 'light' ? saved : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <div class="shell">
+      <div class="rainbow" aria-hidden="true"></div>
+      <header>
+        <div class="eyebrow">THE RESONANT MIRROR // PUBLIC RECORD</div>
+        <h1>Privacy Policy</h1>
+        <div class="status">STATUS: PLAIN-LANGUAGE DISCLOSURE</div>
+        <a class="back" href="/index.html">&lt; RETURN TO THE RESONANT MIRROR</a>
+      </header>
+
+      <main>
+        <p class="meta"><strong>Effective:</strong> September 9, 2026 &nbsp;•&nbsp; <strong>Operator:</strong> Thomas Kenny</p>
+        <div class="notice">The shortest honest version: anonymous visitors can send a message without registering. Signing in is optional and enables a site-only handle and replies. The relay sends the chosen handle or callsign and message text to a private Discord forum. It does not use a visitor's Google name or email as their chat identity.</div>
+
+        <h2>1. Scope</h2>
+        <p>This policy covers the portfolio at <a href="https://www.getadongle.com/">www.getadongle.com</a>, including portfolio sign-in, refinement submissions, and the Resonant Relay. The Red Door game uses separate credentials and does not grant access to the portfolio relay or its verified sessions.</p>
+
+        <h2>2. Information processed</h2>
+        <h3>Information you choose to provide</h3>
+        <ul>
+          <li><strong>Anonymous relay:</strong> message text and, if supplied, an optional callsign.</li>
+          <li><strong>Verified relay:</strong> a site-only handle you choose and your message text.</li>
+          <li><strong>Refinements:</strong> the title, category, priority, and requested-change text you submit.</li>
+          <li><strong>Passkey registration:</strong> an account label you enter. If you later choose a relay handle, that handle becomes the account's displayed label on this site.</li>
+        </ul>
+
+        <h3>Authentication and account records</h3>
+        <ul>
+          <li><strong>Google sign-in:</strong> the site verifies a fresh Google/Firebase token and retains Google's stable subject identifier so the same account can be recognized later. A visitor's Google profile name and email address are not retained. The owner's verified email may be retained to establish the owner role.</li>
+          <li><strong>Passkeys:</strong> the site retains the credential ID, public key, signature counter, authenticator transport list, account association, and creation time. Private keys and biometric data stay with your authenticator and are never received by the site.</li>
+          <li><strong>Sessions and ceremonies:</strong> cookies contain random tokens. The database retains hashes of those tokens, authentication method, account association, and timestamps.</li>
+        </ul>
+
+        <h3>Operational records</h3>
+        <p>The site may retain an opaque account ID, handle and normalized handle, disclosure version and acceptance time, delivery state, Discord thread and message identifiers, and timestamps. Message text is not stored in the site's D1 dispatch table, but Discord retains the copy delivered to the private forum.</p>
+        <p>For abuse prevention, the Worker creates a short-lived rate-limit key by hashing the request IP address with a purpose and ten-minute window. The raw IP address is not stored in the application database. Cloudflare still processes network and device information as the hosting and security provider.</p>
+
+        <h2>3. How the information is used</h2>
+        <ul>
+          <li>Verify sign-in and bind passkeys or a Google subject to the correct site account.</li>
+          <li>Deliver messages to Thomas and return replies to the correct verified handle.</li>
+          <li>Store and display refinement submissions to the submitting visitor or site owner.</li>
+          <li>Prevent duplicate delivery, limit abuse, maintain security, and diagnose failures without logging message bodies or credentials.</li>
+        </ul>
+
+        <h2>4. Services that process information</h2>
+        <ul>
+          <li><strong>Cloudflare</strong> hosts the Worker and D1 database and provides network and security services. See <a href="https://www.cloudflare.com/privacypolicy/" rel="noreferrer">Cloudflare's Privacy Policy</a>.</li>
+          <li><strong>Discord</strong> receives the callsign or chosen handle and message text, stores the private forum copy, and returns eligible replies. See <a href="https://discord.com/privacy" rel="noreferrer">Discord's Privacy Policy</a>.</li>
+          <li><strong>Google and Firebase Authentication</strong> process sign-in data only when you choose Google sign-in. See <a href="https://policies.google.com/privacy" rel="noreferrer">Google's Privacy Policy</a>.</li>
+        </ul>
+        <p>The Resonant Mirror does not sell or rent personal information and does not use relay or authentication data for third-party advertising.</p>
+
+        <h2>5. Retention</h2>
+        <ul>
+          <li>Verified sessions expire after 12 hours.</li>
+          <li>Passkey ceremony records expire after about 5 minutes.</li>
+          <li>Application rate-limit keys expire after about 10 minutes. Expired database rows may remain until a later cleanup pass, but are no longer accepted for their original purpose.</li>
+          <li>Account, passkey, handle, thread-mapping, refinement, and delivery-receipt records remain while needed to operate the service, protect it, honor a deletion request, or meet a legal obligation.</li>
+          <li>Discord controls retention of the message copy stored in Discord. Thomas can remove forum messages and threads he controls, but Discord's backups and internal records follow Discord's own policy.</li>
+        </ul>
+
+        <h2>6. Your choices and requests</h2>
+        <p>You may use the relay anonymously for one-way delivery, use a passkey, use Google sign-in, or choose not to use the relay. Anonymous messages cannot receive replies through the site.</p>
+        <p>To request access, correction, or deletion of information controlled by The Resonant Mirror, email <a href="mailto:tom@getadongle.com?subject=Resonant%20Mirror%20privacy%20request">tom@getadongle.com</a>. Include your site handle or enough approximate dispatch detail to locate the record. Thomas may ask for reasonable proof that you control the account or message before acting. Some limited security, delivery, or legal records may be retained when necessary.</p>
+
+        <h2>7. Children</h2>
+        <p>The relay is not directed to children under 13 or anyone below the minimum age required in their jurisdiction. Do not submit personal information or messages through the relay if this applies to you.</p>
+
+        <h2>8. Security and limits</h2>
+        <p>The service uses same-origin requests, secure HTTP-only session cookies, scoped Discord permissions, private forum access, rate limits, bounded payloads, and redacted logs. No internet service can promise absolute security or uninterrupted delivery.</p>
+
+        <h2>9. Changes and contact</h2>
+        <p>Material changes will be posted on this page with a revised effective date. Questions or privacy requests may be sent to <a href="mailto:tom@getadongle.com">tom@getadongle.com</a>.</p>
+      </main>
+
+      <footer>THE RESONANT MIRROR • <a href="/terms">TERMS OF USE</a> • <a href="/index.html">PORTFOLIO</a></footer>
+    </div>
+  </body>
+</html>

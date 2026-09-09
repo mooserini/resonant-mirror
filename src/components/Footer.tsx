@@ -46,6 +46,11 @@ export const Footer: React.FC<FooterProps> = ({ onOpenGpg, onOpenRefinement }) =
             <div className="text-[10px]">
               TYPOGRAPHY: <a href="https://int10h.org/oldschool-pc-fonts/fontlist/font?att_pc6300" target="_blank" rel="noopener noreferrer" className="hover:underline text-[var(--text-secondary)]">Web AT&amp;T PC6300</a> by <a href="https://github.com/viler-int10h" target="_blank" rel="noopener noreferrer" className="hover:underline text-[var(--text-secondary)]">VileR</a> (int10h.org) • CC BY-SA 4.0
             </div>
+            <nav aria-label="Legal and privacy" className="flex flex-wrap justify-center sm:justify-start gap-x-3 gap-y-1 text-[10px]">
+              <a href="/privacy" className="hover:underline text-[var(--text-secondary)]">[ PRIVACY ]</a>
+              <a href="/terms" className="hover:underline text-[var(--text-secondary)]">[ TERMS ]</a>
+              <a href="mailto:tom@getadongle.com" className="hover:underline text-[var(--text-secondary)]">[ POLICY CONTACT ]</a>
+            </nav>
           </div>
 
           <div className="flex items-center gap-2">

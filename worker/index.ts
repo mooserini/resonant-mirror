@@ -9,6 +9,13 @@ const redDoorPaths = new Set([
   '/assets/fonts/Ac437_ATT_PC6300.ttf', '/assets/linktree-qr-400.png',
 ]);
 
+const legalPages = new Map([
+  ['/privacy', '/privacy.html'],
+  ['/privacy/', '/privacy.html'],
+  ['/terms', '/terms.html'],
+  ['/terms/', '/terms.html'],
+]);
+
 export default {
   async fetch(request, env, ctx): Promise<Response> {
     const url = new URL(request.url);
@@ -31,6 +38,7 @@ export default {
     // with existing origin redirects or browser-cached index redirects.
     const assetUrl = new URL(request.url);
     if (assetUrl.pathname === '/') assetUrl.pathname = '/index.html';
+    assetUrl.pathname = legalPages.get(assetUrl.pathname) || assetUrl.pathname;
     const asset = await env.ASSETS.fetch(new Request(assetUrl, request));
     if (asset.status !== 404) return asset;
 
