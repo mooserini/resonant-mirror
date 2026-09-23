@@ -57,6 +57,7 @@ export const PROJECTS: Project[] = [
       "Configuration review"
     ],
     "repoUrl": "https://github.com/mooserini/hermes-config-guardian",
+    "link": "/hermes-guardian-demo/index.html",
     "sourceKind": "repository",
     "featured": true
   },
