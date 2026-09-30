@@ -80,6 +80,7 @@ GPG KEY ID:       ${PERSONAL_INFO.gpgKeyId}
 FINGERPRINT:      ${PERSONAL_INFO.gpgFingerprint}
 GITHUB REPO:      ${PERSONAL_INFO.githubUrl}
 HUGGING FACE:     ${PERSONAL_INFO.huggingFaceUrl} (@${PERSONAL_INFO.huggingFaceHandle})
+GRAVATAR:         ${PERSONAL_INFO.gravatarUrl}
 BLOG DISPATCHES:  ${PERSONAL_INFO.blogUrl}
 ----------------------------------------------------------------------
 MANDATE:
