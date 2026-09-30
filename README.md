@@ -26,6 +26,7 @@ The project-card sources and claim boundaries are recorded in [PUBLIC-SOURCES.md
 | GitHub | [@mooserini](https://github.com/mooserini) |
 | Hugging Face | [@mooserini](https://huggingface.co/mooserini) |
 | ORCID | [0009-0000-9987-6106](https://orcid.org/0009-0000-9987-6106) |
+| Gravatar | [gravatar.com/quirkymysteriouslydf035f4033](https://gravatar.com/quirkymysteriouslydf035f4033) |
 | Email | [tom@getadongle.com](mailto:tom@getadongle.com) |
 | GPG fingerprint | `E7B3 223E A0F0 3348 C674 7EBA 17B5 86FD 7394 2305` |
 

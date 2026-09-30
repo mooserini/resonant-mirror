@@ -18,6 +18,8 @@ export const PERSONAL_INFO = {
   huggingFaceUrl: 'https://huggingface.co/mooserini',
   huggingFaceHandle: 'mooserini',
   linkedinUrl: 'https://www.linkedin.com/in/mooserini/',
+  gravatarUrl: 'https://gravatar.com/quirkymysteriouslydf035f4033',
+  gravatarLabel: 'Profile hub',
   tagline: 'Bridging 1980s CGA Architecture with 2026 Autonomous Neural Lineage',
   bioParagraphs: [
     'I am a systems architect and distributed computing engineer specializing in verifiable agentic continuity, cryptographic hardware attestation, and vintage computer graphics typography. Operating at the intersection of autonomic agent lineage (Hermes House) and strict local boundary security, my work emphasizes deterministic state, zero-trust telemetry, and durable knowledge preservation.',
