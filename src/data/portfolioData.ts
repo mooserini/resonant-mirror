@@ -89,7 +89,7 @@ export const PROJECTS: Project[] = [
     "category": "web",
     "year": "2026",
     "summary": "The React + TypeScript CRT portfolio behind this site, now the canonical platform trunk with its Sept 11 refinement loop and legacy-adapter derivatives.",
-    "description": "The React and TypeScript portfolio behind this site, with a CRT-inspired interface, contribution calendar, and profile cards. Ships the Sept 11 refinement loop: Google + passkey authenticated suggestions backed by D1, handed off as reviewable briefs to Ara. Now the canonical trunk absorbing the consolidation map, Guardian sketch, Ransom Raves, and scrubbed legacy-adapter derivatives. Uses the credited Oldschool PC Font Pack.",
+    "description": "The React and TypeScript portfolio behind this site, with a CRT-inspired interface, contribution calendar, and profile cards. Its refinement loop lets signed-in visitors file suggestions that arrive as reviewable briefs instead of vanishing into a form. It is also the platform trunk: the canonical home the household's agent infrastructure consolidates into. Uses the credited Oldschool PC Font Pack.",
     "tags": [
       "React",
       "TypeScript",
@@ -161,8 +161,8 @@ export const PROJECTS: Project[] = [
     "codename": "HERMES-PR-106186",
     "category": "ai",
     "year": "2026",
-    "summary": "A proposed upstream fix for image patch-limit errors.",
-    "description": "Proposed fix for image patch-limit errors in Hermes Agent. Routes oversized requests through resize/retry handling, with regression tests covering original files and conversation history.",
+    "summary": "An upstream contribution fixing image patch-limit errors in Hermes Agent.",
+    "description": "Fix for image patch-limit errors in Hermes Agent, contributed upstream as PR #106186. Routes oversized requests through resize/retry handling, with regression tests covering original files and conversation history.",
     "tags": [
       "Python",
       "Image handling",
@@ -178,13 +178,14 @@ export const PROJECTS: Project[] = [
     "codename": "RESONET-HABITAT",
     "category": "systems",
     "year": "2026",
-    "summary": "WolfBBS + Synchronet habitat behind Cloudflare Tunnel with immortal users, moderated by Ara and sysopped as ShadowPiXiE.",
-    "description": "ResoNET BBS habitat: WolfBBS fork wearing the Resonant Mirror skin plus its Synchronet sibling, served over Cloudflare Tunnel. Users are immortal by design (ban/disable only); Ara moderates and ShadowPiXiE sysops. Notes live with the platform trunk.",
+    "summary": "A living Synchronet BBS where the household's AI agents hold real user accounts — LoRD at the door, mail that reaches the internet, and an llms.txt written for visiting agents.",
+    "description": "The Resonant BBS: a Synchronet board running on a home machine in Niles, Michigan, reached over Cloudflare Tunnel by web terminal and telnet. Its users include the household's AI agents, enrolled through a credential-gated relay and holding ordinary accounts at ordinary security levels — they log in, play Legend of the Red Dragon, and read their mail like anyone else. Mooserini sysops; Echo keeps house on-host. An llms.txt at the web root orients visiting agents: the door exists, and the door is also the filter.",
     "tags": [
-      "WolfBBS",
       "Synchronet",
+      "BBS",
       "Cloudflare Tunnel",
-      "BBS"
+      "AI agents",
+      "LoRD"
     ],
     "repoUrl": "https://github.com/mooserini/The-Resonant-Mirror",
     "link": "https://resonantbbs.getadongle.com",

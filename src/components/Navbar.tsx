@@ -59,6 +59,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     { label: 'PROJECTS', href: '#projects' },
     { label: 'SKILLS', href: '#skills' },
     { label: 'CONTACT', href: '#contact' },
+    { label: 'RESONANT BBS', href: 'https://resonantbbs.getadongle.com' },
     { label: 'KEY RING', href: '#footer-credentials' },
   ];
 
