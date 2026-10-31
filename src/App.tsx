@@ -16,6 +16,7 @@ import { ResonantRelayModal } from './components/ResonantRelayModal';
 import { Wrench, WifiOff } from 'lucide-react';
 import { FidoSession } from './types';
 import { getCurrentFidoSession, refreshFidoSession } from './utils/fidoAuth';
+import { resolveInitialScanlines, resolveInitialTheme, writeVisitorPrefs } from './utils/visitorPrefs';
 import { retroAudio } from './utils/audio';
 
 export default function App() {
@@ -43,21 +44,9 @@ export default function App() {
   const [isManualOfflineTest, setIsManualOfflineTest] = useState<boolean>(false);
   const [isRelayModalOpen, setIsRelayModalOpen] = useState<boolean>(false);
 
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('rm_theme');
-      if (saved === 'dark' || saved === 'light') return saved;
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    }
-    return 'light';
-  });
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => resolveInitialTheme());
 
-  const [scanlines, setScanlines] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('rm_scanlines') === 'true';
-    }
-    return false;
-  });
+  const [scanlines, setScanlines] = useState<boolean>(() => resolveInitialScanlines());
 
   const [audioMuted, setAudioMuted] = useState<boolean>(true);
   const [fidoSession, setFidoSession] = useState<FidoSession | null>(() => getCurrentFidoSession());
@@ -102,15 +91,15 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleGlobalKeyDown);
   }, [isTerminalOpen]);
 
-  // Apply theme to html root
+  // Apply theme to html root and persist to the shared house cookie
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('rm_theme', theme);
+    writeVisitorPrefs({ theme });
   }, [theme]);
 
-  // Persist scanline preference
+  // Persist scanline preference to the shared house cookie
   useEffect(() => {
-    localStorage.setItem('rm_scanlines', String(scanlines));
+    writeVisitorPrefs({ scanlines });
   }, [scanlines]);
 
   // Monitor network connectivity & modem diagnostics event
