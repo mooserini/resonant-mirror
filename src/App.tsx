@@ -16,7 +16,8 @@ import { ResonantRelayModal } from './components/ResonantRelayModal';
 import { Wrench, WifiOff } from 'lucide-react';
 import { FidoSession } from './types';
 import { getCurrentFidoSession, refreshFidoSession } from './utils/fidoAuth';
-import { resolveInitialScanlines, resolveInitialTheme, writeVisitorPrefs } from './utils/visitorPrefs';
+import { isTourDone, markTourDone, resolveInitialScanlines, resolveInitialTheme, writeVisitorPrefs } from './utils/visitorPrefs';
+import { WelcomeTour } from './components/WelcomeTour';
 import { retroAudio } from './utils/audio';
 
 export default function App() {
@@ -43,6 +44,7 @@ export default function App() {
   });
   const [isManualOfflineTest, setIsManualOfflineTest] = useState<boolean>(false);
   const [isRelayModalOpen, setIsRelayModalOpen] = useState<boolean>(false);
+  const [tourOpen, setTourOpen] = useState<boolean>(false);
 
   const [theme, setTheme] = useState<'light' | 'dark'>(() => resolveInitialTheme());
 
@@ -148,6 +150,13 @@ export default function App() {
   const handleBootComplete = () => {
     sessionStorage.setItem('rm_has_booted', 'true');
     setBooting(false);
+    // First visit ever: once the boot clears, walk them through the house.
+    if (!isTourDone()) setTourOpen(true);
+  };
+
+  const handleTourFinish = () => {
+    markTourDone();
+    setTourOpen(false);
   };
 
   const handleReboot = () => {
@@ -303,6 +312,9 @@ export default function App() {
             onClose={() => setIsRelayModalOpen(false)}
             onOpenTerminal={() => setIsTerminalOpen(true)}
           />
+
+          {/* First-visit welcome wizard (spotlight tour) */}
+          {tourOpen && <WelcomeTour onFinish={handleTourFinish} />}
 
           {/* Retro 1980s Modem Offline Fallback & Diagnostic Generator */}
           <OfflineFallback
