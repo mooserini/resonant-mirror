@@ -126,8 +126,8 @@ export const PROJECTS: Project[] = [
     "codename": "VESPER-WEATHER",
     "category": "web",
     "year": "2026",
-    "summary": "Client-side weather prototype that maps Open-Meteo conditions to an animated character, lighting, and motion. Includes place search and optional geolocation.",
-    "description": "Client-side weather prototype that maps Open-Meteo conditions to an animated character, lighting, and motion. Includes place search and optional geolocation.",
+    "summary": "Client-side weather prototype that maps Open-Meteo conditions to an animated character, lighting, and motion. A work-in-progress snapshot of its transition lab runs live on this site.",
+    "description": "Client-side weather prototype that maps Open-Meteo conditions to an animated character, lighting, and motion. Includes place search and optional geolocation. Parked, not abandoned: a dated snapshot of the real-weather transition lab — five weather bodies sharing one nervous system — runs live under this site, status tags honest about what is seated and what is still a sketch.",
     "tags": [
       "HTML",
       "SVG",
@@ -135,6 +135,7 @@ export const PROJECTS: Project[] = [
       "Weather"
     ],
     "repoUrl": "https://github.com/mooserini/vesper-real-weather-lab",
+    "link": "https://www.getadongle.com/vesper/real-weather-snapshot-2026-08-13/index.html",
     "sourceKind": "repository",
     "featured": false
   },
