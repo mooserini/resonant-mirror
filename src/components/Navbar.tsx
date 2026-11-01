@@ -59,8 +59,8 @@ export const Navbar: React.FC<NavbarProps> = ({
     { label: 'PROJECTS', href: '#projects' },
     { label: 'SKILLS', href: '#skills' },
     { label: 'CONTACT', href: '#contact' },
-    { label: 'RESONANT BBS', href: 'https://resonantbbs.getadongle.com' },
-    { label: 'KEY RING', href: '#footer-credentials' },
+    { label: 'BBS', href: 'https://resonantbbs.getadongle.com' },
+    { label: 'KEYS', href: '#footer-credentials' },
   ];
 
   const handleNavClick = () => {
@@ -99,7 +99,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </a>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden xl:flex items-center gap-6 text-xs tracking-wider" aria-label="Main Navigation">
+          <nav className="hidden xl:flex items-center gap-4 text-xs tracking-wider" aria-label="Main Navigation">
             {navLinks.map((link) => (
               <a
                 key={link.label}
@@ -114,7 +114,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </nav>
 
           {/* Action Toolbar */}
-          <div className="hidden xl:flex items-center gap-2 shrink-0">
+          <div className="hidden xl:flex items-center gap-1.5 shrink-0">
             {/* Make Refinement Button */}
             {onOpenRefinement && (
               <button
@@ -127,7 +127,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 title="Sign in to propose a change and prepare a brief for your chosen assistant"
               >
                 <Wrench className="w-3.5 h-3.5" />
-                <span className="hidden min-[1500px]:inline">REFINE</span>
+                <span>REFINE</span>
               </button>
             )}
 
@@ -148,12 +148,12 @@ export const Navbar: React.FC<NavbarProps> = ({
               {fidoSession?.isAuthenticated ? (
                 <>
                   <ShieldCheck className="w-3.5 h-3.5 text-[#00aa00]" />
-                  <span className="hidden min-[1500px]:inline">PASSKEY: VERIFIED</span>
+                  <span>PASSKEY: VERIFIED</span>
                 </>
               ) : (
                 <>
                   <KeyRound className="w-3.5 h-3.5" />
-                  <span className="hidden min-[1500px]:inline">SIGN IN</span>
+                  <span>SIGN IN</span>
                 </>
               )}
             </button>
@@ -182,7 +182,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 ) : (
                   <>
                     <Radio className="w-3.5 h-3.5 text-[var(--rm-status)]" />
-                    <span className="hidden min-[1500px]:inline">MODEM</span>
+                    <span className="hidden xl:inline">MODEM</span>
                   </>
                 )}
               </button>
@@ -201,7 +201,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 aria-label="Open Resonant Relay"
               >
                 <MessageSquare className="w-3.5 h-3.5" />
-                <span className="hidden min-[1500px]:inline">CHAT</span>
+                <span className="hidden sm:inline">CHAT</span>
               </button>
             )}
 
@@ -217,7 +217,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               aria-label="Open 80s DOS Terminal"
             >
               <Terminal className="w-3.5 h-3.5 text-[var(--rm-status)]" />
-              <span className="hidden min-[1500px]:inline">DOS (~)</span>
+              <span>DOS (~)</span>
             </button>
 
             {/* Dark / Light Scheme Flip */}
