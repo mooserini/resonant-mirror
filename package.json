@@ -11,7 +11,8 @@
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit && tsc --project tsconfig.worker.json --noEmit",
     "check:worker": "node --test worker/*.test.mjs",
-    "deploy:check": "npm run build && wrangler deploy --dry-run"
+    "deploy:check": "npm run build && wrangler deploy --dry-run",
+    "sync-pins": "node scripts/sync-pins.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
