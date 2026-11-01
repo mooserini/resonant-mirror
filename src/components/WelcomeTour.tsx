@@ -69,6 +69,7 @@ export const WelcomeTour: React.FC<{ onFinish: () => void }> = ({ onFinish }) =>
   const [step, setStep] = useState(0);
   const [ring, setRing] = useState<Ring | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
   const current = STEPS[step];
   const isLast = step === STEPS.length - 1;
 
@@ -117,6 +118,37 @@ export const WelcomeTour: React.FC<{ onFinish: () => void }> = ({ onFinish }) =>
     cardRef.current?.focus();
   }, [step]);
 
+  // While the tour is open, the rest of the page is inert: aria-modal
+  // promises it, and the Tab trap above keeps keyboard focus inside.
+  // Every sibling subtree along the dialog's ancestor chain (i.e.
+  // everything that is not the dialog's own branch) gets the flag.
+  useEffect(() => {
+    const root = dialogRef.current;
+    if (!root) return;
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    const touched: HTMLElement[] = [];
+    const mark = (el: HTMLElement) => {
+      el.setAttribute('inert', '');
+      (el as unknown as { inert: boolean }).inert = true;
+      touched.push(el);
+    };
+    let node: HTMLElement | null = root;
+    while (node && node.parentElement && node.parentElement !== document.documentElement) {
+      const parent: HTMLElement = node.parentElement;
+      Array.from(parent.children).forEach((sib) => {
+        if (sib !== node) mark(sib as HTMLElement);
+      });
+      node = parent;
+    }
+    return () => {
+      touched.forEach((el) => {
+        el.removeAttribute('inert');
+        (el as unknown as { inert: boolean }).inert = false;
+      });
+      previouslyFocused?.focus?.();
+    };
+  }, []);
+
   const finish = useCallback(() => {
     retroAudio.playKeyclick();
     onFinish();
@@ -124,6 +156,32 @@ export const WelcomeTour: React.FC<{ onFinish: () => void }> = ({ onFinish }) =>
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Tab') {
+        // Focus trap: Tab and Shift+Tab cycle inside the dialog.
+        const root = dialogRef.current;
+        if (!root) return;
+        const focusables = Array.from(root.querySelectorAll('button, a[href]'))
+          .map((el) => el as HTMLElement)
+          .filter((el) => el.offsetParent !== null);
+        if (focusables.length === 0) {
+          e.preventDefault();
+          cardRef.current?.focus();
+          return;
+        }
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        const active = document.activeElement;
+        if (e.shiftKey) {
+          if (active === first || active === cardRef.current || !root.contains(active)) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else if (active === last || !root.contains(active)) {
+          e.preventDefault();
+          first.focus();
+        }
+        return;
+      }
       if (e.key === 'Escape') finish();
       if (e.key === 'ArrowRight' && !isLast) setStep((s) => s + 1);
       if (e.key === 'ArrowLeft' && step > 0) setStep((s) => s - 1);
@@ -152,7 +210,7 @@ export const WelcomeTour: React.FC<{ onFinish: () => void }> = ({ onFinish }) =>
       };
 
   return (
-    <div className="fixed inset-0 z-50" role="dialog" aria-modal="true" aria-label="Welcome tour">
+    <div ref={dialogRef} className="fixed inset-0 z-50" role="dialog" aria-modal="true" aria-label="Welcome tour">
       {/* Click-catcher: dims the room when there is no spotlight ring
           (the ring's own shadow does the dimming when there is). */}
       <div
