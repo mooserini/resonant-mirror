@@ -13,12 +13,12 @@ export const PINNED_PROJECTS: Project[] = [
     "description": "The Resonant Mirror -- The weird place between the old days and now that doesn't look like a dashboard, but doesn't look like anything else either.",
     "year": "2026",
     "tags": [
-      "ac437",
       "bbs",
       "cga",
       "discord",
       "discord-bot",
-      "discord-py"
+      "discord-py",
+      "discordbot"
     ],
     "repoUrl": "https://github.com/mooserini/The-Resonant-Mirror",
     "sourceKind": "repository",
