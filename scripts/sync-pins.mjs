@@ -28,7 +28,7 @@ import { dirname, join } from "node:path";
 
 const CATEGORY_BY_REPO = {
   "The-Resonant-Mirror": "web",
-  "hermes-config-guardian": "security",
+  "getadongle-guardian": "security",
   "whole": "ai",
   "vesper-real-weather-lab": "retro",
   "IMAPIIe-Now": "systems",
