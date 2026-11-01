@@ -25,21 +25,22 @@ export const PINNED_PROJECTS: Project[] = [
     "featured": true
   },
   {
-    "id": "hermes-config-guardian",
-    "title": "hermes config guardian",
-    "codename": "HERMES-CONFIG-GUARDIAN",
+    "id": "getadongle-guardian",
+    "title": "getadongle guardian",
+    "codename": "GETADONGLE-GUARDIAN",
     "category": "security",
-    "summary": "Independent macOS guardian for human-approved Hermes Agent configuration changes.",
-    "description": "Independent macOS guardian for human-approved Hermes Agent configuration changes.",
+    "summary": "Independent macOS guardian for recorded Agent configuration changes.",
+    "description": "Independent macOS guardian for recorded Agent configuration changes.",
     "year": "2026",
     "tags": [
       "configuration-management",
       "hermes-agent",
       "human-in-the-loop",
       "macos",
-      "swift"
+      "swift",
+      "agent-framework"
     ],
-    "repoUrl": "https://github.com/mooserini/hermes-config-guardian",
+    "repoUrl": "https://github.com/mooserini/getadongle-guardian",
     "sourceKind": "repository",
     "featured": true
   },
