@@ -28,7 +28,10 @@ const MAX_AGE_SECONDS = 60 * 60 * 24 * 365; // one year
 
 function cookieDomainAttribute(): string {
   if (typeof window === 'undefined') return '';
-  return window.location.hostname.endsWith('getadongle.com')
+  // Exact host or a dot-boundary suffix only: a host that merely ends
+  // in the string (evilgetadongle.com) must not match (CodeQL).
+  const host = window.location.hostname;
+  return host === 'getadongle.com' || host.endsWith('.getadongle.com')
     ? '; Domain=.getadongle.com'
     : '';
 }
