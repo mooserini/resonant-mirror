@@ -80,7 +80,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <a 
             href="#" 
             onClick={handleNavClick}
-            className="flex items-center gap-2.5 group cursor-pointer focus:outline-none"
+            className="flex items-center gap-2.5 group cursor-pointer focus:outline-none shrink-0"
             id="nav-brand-link"
           >
             <img 
@@ -89,23 +89,23 @@ export const Navbar: React.FC<NavbarProps> = ({
               className="w-8 h-8 sm:w-9 sm:h-9 object-contain drop-shadow-sm transition-transform group-hover:scale-105"
             />
             <div className="flex flex-col">
-              <span className="text-sm sm:text-base font-bold tracking-wider text-[var(--text-primary)]">
+              <span className="text-sm sm:text-base font-bold tracking-wider text-[var(--text-primary)] whitespace-nowrap">
                 THE RESONANT MIRROR
               </span>
-              <span className="text-[10px] text-[var(--text-muted)] tracking-widest uppercase">
+              <span className="text-[10px] text-[var(--text-muted)] tracking-widest uppercase whitespace-nowrap">
                 THOMAS KENNY // AT&amp;T PC6300
               </span>
             </div>
           </a>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-6 text-xs tracking-wider" aria-label="Main Navigation">
+          <nav className="hidden xl:flex items-center gap-6 text-xs tracking-wider" aria-label="Main Navigation">
             {navLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
                 onClick={handleNavClick}
-                className="text-[var(--text-secondary)] hover:text-[var(--rm-accent-bright)] font-semibold transition-colors hover:underline decoration-2 underline-offset-4"
+                className="text-[var(--text-secondary)] hover:text-[var(--rm-accent-bright)] font-semibold transition-colors hover:underline decoration-2 underline-offset-4 whitespace-nowrap"
                 id={`nav-link-${link.label.toLowerCase()}`}
               >
                 [{link.label}]
@@ -114,7 +114,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </nav>
 
           {/* Action Toolbar */}
-          <div className="hidden sm:flex items-center gap-2">
+          <div className="hidden xl:flex items-center gap-2 shrink-0">
             {/* Make Refinement Button */}
             {onOpenRefinement && (
               <button
@@ -127,7 +127,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 title="Sign in to propose a change and prepare a brief for your chosen assistant"
               >
                 <Wrench className="w-3.5 h-3.5" />
-                <span>REFINE</span>
+                <span className="hidden min-[1500px]:inline">REFINE</span>
               </button>
             )}
 
@@ -148,12 +148,12 @@ export const Navbar: React.FC<NavbarProps> = ({
               {fidoSession?.isAuthenticated ? (
                 <>
                   <ShieldCheck className="w-3.5 h-3.5 text-[#00aa00]" />
-                  <span>PASSKEY: VERIFIED</span>
+                  <span className="hidden min-[1500px]:inline">PASSKEY: VERIFIED</span>
                 </>
               ) : (
                 <>
                   <KeyRound className="w-3.5 h-3.5" />
-                  <span>SIGN IN</span>
+                  <span className="hidden min-[1500px]:inline">SIGN IN</span>
                 </>
               )}
             </button>
@@ -182,7 +182,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 ) : (
                   <>
                     <Radio className="w-3.5 h-3.5 text-[var(--rm-status)]" />
-                    <span className="hidden xl:inline">MODEM</span>
+                    <span className="hidden min-[1500px]:inline">MODEM</span>
                   </>
                 )}
               </button>
@@ -201,7 +201,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 aria-label="Open Resonant Relay"
               >
                 <MessageSquare className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">CHAT</span>
+                <span className="hidden min-[1500px]:inline">CHAT</span>
               </button>
             )}
 
@@ -217,7 +217,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               aria-label="Open 80s DOS Terminal"
             >
               <Terminal className="w-3.5 h-3.5 text-[var(--rm-status)]" />
-              <span>DOS (~)</span>
+              <span className="hidden min-[1500px]:inline">DOS (~)</span>
             </button>
 
             {/* Dark / Light Scheme Flip */}
@@ -283,7 +283,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex sm:hidden items-center gap-2">
+          <div className="flex xl:hidden items-center gap-2">
             <button
               id="nav-theme-mobile-btn"
               onClick={onToggleTheme}
@@ -305,7 +305,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
-          <div className="sm:hidden border-t border-[var(--border-color)] py-3 px-2 space-y-2 bg-[var(--bg-card)]">
+          <div className="xl:hidden border-t border-[var(--border-color)] py-3 px-2 space-y-2 bg-[var(--bg-card)]">
             {navLinks.map((link) => (
               <a
                 key={link.label}
