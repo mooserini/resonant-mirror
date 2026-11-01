@@ -153,7 +153,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               ) : (
                 <>
                   <KeyRound className="w-3.5 h-3.5" />
-                  <span>SIGN IN</span>
+                  <span>LOGON</span>
                 </>
               )}
             </button>
@@ -217,7 +217,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               aria-label="Open 80s DOS Terminal"
             >
               <Terminal className="w-3.5 h-3.5 text-[var(--rm-status)]" />
-              <span>DOS (~)</span>
+              <span>DOS</span>
             </button>
 
             {/* Dark / Light Scheme Flip */}
@@ -375,7 +375,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className="w-full px-3 py-2 text-xs border border-[var(--border-strong)] flex items-center justify-center gap-2 text-[var(--text-primary)]"
               >
                 <KeyRound className="w-4 h-4" />
-                <span>{fidoSession?.isAuthenticated ? 'PASSKEY: VERIFIED' : 'SIGN IN'}</span>
+                <span>{fidoSession?.isAuthenticated ? 'PASSKEY: VERIFIED' : 'LOGON'}</span>
               </button>
               <div className="flex w-full gap-2 justify-between">
                 <button
